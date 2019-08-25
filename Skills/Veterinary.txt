@@ -1,0 +1,83 @@
+/////////////////////////////////////////////
+// UO Steam Skill Trainer - Veterinary
+// for Outlands
+// by Jewele
+//
+// Trains veterinary skill by attacking your pet and healing it.
+//
+// How to use?
+// -----------
+// 1) Get 2 pets (easiest is 2 horses)
+// 2) Run script
+//
+// Script not running?
+//
+//    Clear your aliases. Go to Macros-Active Objects, and clear 
+//    all Active Objects. 
+//
+// Script buggy?
+//
+//    DO NOT share profiles between characters, it will confuse
+//    the aliases.
+//
+// Version 2.0
+// -----------
+// Rewrite after asg removal
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+sysmsg "Buff Trainer Script - Veterinary" 88
+sysmsg "Version 2.0" 88
+
+if not findalias 'healpet'
+    sysmsg "Select pet for healing" 88
+    promptalias 'healpet'
+endif
+
+while not dead
+
+    //
+    // Bandage check
+    //
+    if counttype '0xe21' 'any' 'backpack' == 0
+        msg "All stop"
+        sysmsg "No bandages!" 44
+        stop
+    endif
+
+    //
+    // Attack healpet
+    //
+    if diffhits 'healpet' > 20
+        msg "All Stop"
+    else
+        msg "All kill"
+        waitfortarget 5000
+        target! 'healpet'
+    endif
+    while diffhits 'healpet' < 5
+        pause 1000
+    endwhile
+
+    //
+    // Heal
+    //
+
+    @clearjournal
+    @removetimer 'healing'
+    @createtimer 'healing'
+    usetype 0xe21 'any' 'backpack'
+    waitfortarget 5000
+    target! 'healpet'
+    while timer 'healing' < 12000
+        if @injournal 'heal' 'system'
+            break
+        endif
+        if @injournal 'finish' 'system'
+            break
+        endif
+    endwhile
+    pause 1000
+    
+endwhile

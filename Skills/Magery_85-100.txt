@@ -1,0 +1,169 @@
+/////////////////////////////////////////////
+// UO Steam Skill Trainer - Magery
+// for Outlands
+// by Jewele
+// 
+// Magery 85-100 trainer. This script summons
+// earth elementals at a bank, restocking regs
+// when needed.
+//
+// How to use?
+// -----------
+// 1) Stock regs in a bag in your bank
+// 2) Start at -bank-, with banker in sight
+// 3) Run script
+//
+// Script not running?
+//
+//    Clear your aliases. Go to Macros-Active Objects, and clear 
+//    all Active Objects. 
+//
+// Script buggy?
+//
+//    DO NOT share profiles between characters, it will confuse
+//    the aliases.
+//
+// Version 2.0
+// -----------
+// Rewrite for asg removal
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+sysmsg "Magery Trainer Script 75-85" 88
+sysmsg "Version 2.0" 88
+
+@useobject 'backpack'
+pause 1000
+
+if not findalias 'bankbag'
+    msg "bank"
+    pause 1000
+    sysmsg "Select a bag with reagents in your bank" 88
+    promptalias 'bankbag'
+endif
+
+//
+// Actions list
+//
+@removelist 'actions'
+@createlist 'actions'
+pushlist 'actions' 'restock'
+
+//
+// Train Regs (stocks 200)
+// 
+@removelist 'trainregs'
+@createlist 'trainregs'
+pushlist 'trainregs' 0xf7b // moss
+pushlist 'trainregs' 0xf86 // root
+pushlist 'trainregs' 0xf8d // silk
+
+msg "bank"
+pause 1000
+msg "bank"
+pause 1000
+
+while not dead
+
+    // 
+    // Magery 100 check
+    //
+    if skill 'magery' == 100
+        headmsg "Im done! woohoo!"
+        stop
+    endif
+
+    // 
+    // Reg check
+    // 
+    if not @inlist! 'actions' 'restock'
+
+        // train regs
+        for 0 to 'trainregs'
+            if @counttype trainregs[] 'any' 'backpack' < 10
+                @clearlist 'actions'
+                sysmsg "I need to restock trainregs" 44
+                pushlist 'actions' 'restock'
+                continue
+            endif
+        endfor
+    endif
+
+    //
+    // Restock regs
+    //
+    if @inlist! 'actions' 'restock'
+        sysmsg "Checking / restocking regs" 88
+        pause 200
+        @clearlist 'actions'
+
+        msg "bank"
+        resync
+        pause 2000
+        @useobject 'bankbag'
+        pause 2000
+        for 0 to 'trainregs'
+            removetimer 'restock'
+            createtimer 'restock'
+            while counttype trainregs[] 'any' 'backpack' < 200
+                sysmsg "restocking reagent" 88
+                movetype trainregs[] 'bankbag' 'backpack' 0 0 0 'any' 200
+                pause 1500
+                if timer 'restock' > 30000
+                    sysmsg "I cannot restock the train regs" 44
+                    stop
+                endif
+            endwhile
+        endfor
+        pushlist 'actions' 'train'    
+        continue
+    endif
+    
+    // 
+    // Train
+    // 
+    if @inlist! 'actions' 'train'
+        pause 200
+        @clearlist 'actions'
+        //
+        // INSERT TRAINING SEQUENCE HERE
+        //
+        // START > 
+        if mana < 50
+            useskill 'meditation'
+            pause 11000
+        endif
+        if mana > 50
+            cast "Summon Earth Elemental"
+            pause 6000
+            msg 'an earth elemental release'
+            pause 1000
+        endif
+        msg "guards"
+        // < END
+        pushlist 'actions' 'train'
+    endif
+
+    //
+    // Server save fix
+    // 
+    if @injournal 'world will save' 'system'
+      sysmsg 'pausing for world save' 44
+      pause 30000
+      @clearjournal
+    endif
+
+    //
+    // skill check
+    //
+    if skill 'Magery' == 100
+      headmsg "Im done" 93
+      stop
+    endif
+
+    pushlist 'actions' 'train'
+
+    pause 1000
+
+endwhile

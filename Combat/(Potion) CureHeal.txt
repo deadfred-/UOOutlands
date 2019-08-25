@@ -1,0 +1,48 @@
+/////////////////////////////////////////////
+// UO Steam Drink Refresh Potion
+// for Outlands
+//
+// Drinks a refresh, runs your dress macro.
+//
+// How to use:
+// ===========
+// 1) Set UOSteam option [X] Check hands before potions
+// 2) Save a dress configuration named 'default' for your current loadout.
+// 3) Run macro whenever you need to drink a refresh
+//
+// Important Notes
+// ===============
+// * Set "Delay between actions" to [500ms]
+//
+// Version History:
+// ================
+// 1.0 initial release
+// 1.1 added cure/heal header message
+//
+// COPY BELOW >>
+/////////////////////////////////////////////
+
+if poisoned 'self'
+    if @findtype 0xf07 0 'backpack'
+        headmsg "Drinking [Cure]" 55
+        useobject! 'found'
+        pause 1000
+    else
+        headmsg 'OUT!!! of Cure potions' 28
+    endif
+else
+    if @findtype 0xf0c 0 'backpack'
+        headmsg "Drinking [Heal]" 44
+        useobject! 'found'
+        pause 1000
+    else
+        headmsg 'OUT!!! of Heal potions' 28
+    endif
+endif
+
+//
+// put equip back
+//
+dress 'default'
+while dressing
+endwhile

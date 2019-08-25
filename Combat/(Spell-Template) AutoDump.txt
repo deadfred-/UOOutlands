@@ -1,0 +1,42 @@
+/////////////////////////////////////////////
+// UO Steam Spell Combat Macro
+// for Outlands
+// by Jewele
+//
+// This is a multi-purpose macro for casting a harmful spell 
+// the exact second you can, against your 'enemy'. If your 
+// enemy is not in range, then it will just hold the spell.
+//
+// If your last target is in range, it will automatically
+// drop the spell, else it will just hold it.
+//
+// This works very well with archer mages, which can hold
+// a spell up while you re-equip your weapon.
+//
+// How to use:
+// -----------
+// 1. Modify macro for harmful spell you want to cast.
+// 2. Paste that into a new macro and keybind
+//
+// Version 1.0
+// -----------
+// First release
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+@cleartargetqueue
+@canceltarget
+if @findobject 'enemy' and @inrange 'enemy' 12
+  autotargetenemy
+endif
+//
+// Cast spell
+// (modify this)
+cast 'Energy Bolt'
+waitfortarget 5000
+//
+// run dress macro
+//
+dress 'default'
+while dressing
+endwhile

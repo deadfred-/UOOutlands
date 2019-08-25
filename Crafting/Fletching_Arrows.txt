@@ -1,0 +1,98 @@
+/////////////////////////////////////////////
+// UO Steam Arrow Crafting Script
+// for Outlands
+// by Jewele
+// 
+// Allows you to stand at bank and craft arrows,
+// pulling wood and feathers from bank, 
+// and putting back finished product.
+//
+// Version 1.0
+// -----------
+// First release! yay!
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+sysmsg "Arrow Crafting Script" 88
+sysmsg "Version 1.0" 88
+
+@useobject 'backpack'
+pause 1000
+
+msg "bank"
+pause 1000
+
+@unsetalias 'bankbag'
+sysmsg "Select a bag with wood, feathers where finished arrows will be placed" 88
+promptalias 'bankbag'
+
+while not dead
+
+    //
+    // check saws
+    //
+    if @counttype 0x1034 0 'backpack' < 1
+        headmsg "I dont have a saw!" 25
+        stop
+    endif
+
+    //
+    // Transfer 500 normal boards
+    //
+    movetype 0x1bd7 'bankbag' 'backpack' 0 0 0 0 500
+    pause 2000
+    if @counttype 0x1bd7 0 'backpack' < 500
+        headmsg "I dont have enough boards!" 25
+        stop
+    endif
+
+    // 
+    // Transfer 500 feathers
+    // 
+    movetype 0x1bd1 'bankbag' 'backpack' 0 0 0 'any' 500
+    pause 2000
+    if @counttype 0x1bd1 0 'backpack' < 500
+        headmsg "I dont have enough feathers!" 25
+        stop
+    endif
+
+    //
+    // Make fletching
+    // 
+    for 1 to 20
+        usetype 0x1034 'any' 'backpack'
+        waitforgump 0x38920abd 15000
+        replygump 0x38920abd 100
+        waitforgump 0x38920abd 15000
+        replygump 0x38920abd 201
+        pause 2000
+    endfor
+
+    //
+    // Fletching check
+    //
+    if @counttype 0x1bd4 0 'backpack' < 500
+        headmsg "I dont have enough fletching!" 25
+        stop
+    endif
+
+    //
+    // Make arrows
+    // 
+    for 1 to 20
+        usetype 0x1034 'any' 'backpack'
+        waitforgump 0x38920abd 15000
+        replygump 0x38920abd 100
+        waitforgump 0x38920abd 15000
+        replygump 0x38920abd 202
+        pause 2000
+    endfor
+
+    //
+    // Move to bank
+    //
+    movetype 0xf3f 'backpack' 'bankbag'
+    pause 2000
+
+endwhile

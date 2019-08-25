@@ -1,0 +1,143 @@
+// Credit : Craigs here
+if not @findobject 'smithmats'
+  headmsg 'Target Materials Container' 57
+  promptalias 'smithmats'
+endif
+if not listexists 'shittosmelt'
+  createlist 'shittosmelt'
+endif
+if list 'shittosmelt' == 0
+  //ringmail helm 50-55
+  @pushlist 'shittosmelt' 0x140b
+  //chainmail gorget 55-65
+  @pushlist 'shittosmelt' 0x13c7
+  //chainmail gloves 65-70
+  @pushlist 'shittosmelt' 0x13f2
+  //chainmail coif 70-75
+  @pushlist 'shittosmelt' 0x13c0
+  //plate gorget 75-85
+  @pushlist 'shittosmelt' 0x1413
+  //plate gloves 85-90
+  @pushlist 'shittosmelt' 0x1418
+  //plate helm 90-95
+  @pushlist 'shittosmelt' 0x1412
+  //plate arms 95-100
+  @pushlist 'shittosmelt' 0x1417
+  //plate legs 100-105
+  @pushlist 'shittosmelt' 0x141a
+  // blacksmithy repair kit 105-120
+  @pushlist 'shittosmelt' 0x1eba
+endif
+if not @findtype 0xfbb 'any' 'backpack'
+  headmsg 'No More Tongs' 44
+  stop
+endif
+if @findtype 0x1bf2 '0' 'backpack' and amount 'found' >= 14
+  if skill 'Blacksmithy' <= 49.9
+    headmsg 'Seek Training To 50.0'
+    pause 650
+  elseif skill 'Blacksmithy' < 55
+    usetype 0xfbb
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 100
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 202
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Blacksmithy' < 65
+    usetype 0xfbb
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 101
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 200
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Blacksmithy' < 70
+    usetype 0xfbb
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 101
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 201
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Blacksmithy' < 75
+    usetype 0xfbb
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 101
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 202
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Blacksmithy' < 85
+    usetype 0xfbb
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 102
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 200
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Blacksmithy' < 90
+    usetype 0xfbb
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 102
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 201
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Blacksmithy' < 95
+    usetype 0xfbb
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 102
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 202
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Blacksmithy' < 100
+    usetype 0xfbb
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 102
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 203
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Blacksmithy' < 105
+    usetype 0xfbb
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 102
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 204
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Blacksmithy' < 120
+    usetype 0xfbb
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 109
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 200
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Blacksmithy' == 120
+    headmsg 'Done' 5
+    stop
+  endif
+else
+  useobject 'smithmats'
+  pause 700
+  movetype 0x1bf2 'smithmats' 'backpack' 1 0 0 0 500
+  pause 1000
+endif
+if weight >= maxweight
+  sysmsg 'Overweight' 21
+  stop
+endif
+for 0 to 'shittosmelt'
+  while @findtype shittosmelt[] 'any' 'backpack'
+    usetype 0xfbb
+    waitforgump 0x38920abd 2000
+    replygump 0x38920abd 3
+    waitfortarget 15000
+    @target! 'found'
+    waitforgump 0x38920abd 2000
+    pause 100
+  endwhile
+endfor

@@ -1,0 +1,43 @@
+/////////////////////////////////////////////
+// UO Steam Skill Trainer - Animal Lore
+// for Outlands
+// by Jewele
+//
+// Trains animal lore on an alt or another player.
+//
+// How to use?
+// -----------
+// 1) Log in another account or find a player who isn't moving
+// 2) Run script
+//
+// Script not running?
+//
+//    Clear your aliases. Go to Macros-Active Objects, and clear 
+//    all Active Objects. 
+//
+// Script buggy?
+//
+//    DO NOT share profiles between characters, it will confuse
+//    the aliases.
+//
+// Version 2.0
+// -----------
+// Rewrite after asg removal
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+sysmsg "Buff Trainer Script - Eval Int" 88
+sysmsg "Version 2.0" 88
+
+if not findalias 'player'
+    sysmsg "Select player for training" 88
+    promptalias 'player'
+endif
+
+while not dead
+    useskill 'Evaluating Intelligence'
+    waitfortarget 5000
+    target! 'player'
+    pause 2100
+endwhile

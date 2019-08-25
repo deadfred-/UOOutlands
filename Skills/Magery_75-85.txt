@@ -1,0 +1,251 @@
+/////////////////////////////////////////////
+// UO Steam Skill Trainer - Magery
+// for Outlands
+// by Jewele
+// 
+// Magery 75-85 trainer. This script recalls you
+// back and forth between a bank and Prevalia Zoo
+// where you will cast spells on anacondas.
+//
+// How to use?
+// -----------
+// 1) Mark a rune at a bank
+// 2) Mark a rune at anacondas at Prevalia Zoo
+// 3) Place both runes in your backpack
+// 4) Start at -bank-, with banker in sight
+// 5) Run script
+//
+// Script not running?
+//
+//    Clear your aliases. Go to Macros-Active Objects, and clear 
+//    all Active Objects. 
+//
+// Script buggy?
+//
+//    DO NOT share profiles between characters, it will confuse
+//    the aliases.
+//
+// Version 2.0
+// -----------
+// Rewrite for asg removal
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+sysmsg "Magery Trainer Script 75-85" 88
+sysmsg "Version 2.0" 88
+
+@useobject 'backpack'
+pause 1000
+
+if not findalias 'bankrune'
+    sysmsg "Select rune for bank access" 88
+    promptalias 'bankrune'
+endif
+if not findalias 'trainrune'
+    sysmsg "Select rune for training location" 88
+    promptalias 'trainrune'
+endif
+if not findalias 'bankbag'
+    msg "bank"
+    pause 1000
+    sysmsg "Select a bag with reagents in your bank" 88
+    promptalias 'bankbag'
+endif
+if not findalias 'banker'
+    sysmsg "Select the banker at your bank" 88
+    promptalias 'banker'
+endif
+
+//
+// Actions list
+//
+@removelist 'actions'
+@createlist 'actions'
+pushlist 'actions' 'restock'
+
+//
+// Script Regs (stocks 10)
+// 
+@removelist 'scriptregs'
+@createlist 'scriptregs'
+pushlist 'scriptregs' 0xf7a // pearl
+pushlist 'scriptregs' 0xf7b // moss
+pushlist 'scriptregs' 0xf86 // root
+
+//
+// Train Regs (stocks 200)
+// 
+@removelist 'trainregs'
+@createlist 'trainregs'
+pushlist 'trainregs' 0xf8c // ash
+pushlist 'trainregs' 0xf8d // silk
+
+msg "bank"
+pause 1000
+msg "bank"
+pause 1000
+
+while not dead
+
+    // 
+    // Reg check
+    // 
+    if not @inlist! 'actions' 'restock'
+        // script regs
+        for 0 to 'scriptregs'
+            if @counttype scriptregs[] 'any' 'backpack' < 5
+                @clearlist 'actions'
+                pushlist 'actions' 'restock'
+                continue
+            endif
+        endfor
+        // train regs
+        for 0 to 'trainregs'
+            if @counttype trainregs[] 'any' 'backpack' < 10
+                @clearlist 'actions'
+                pushlist 'actions' 'restock'
+                continue
+            endif
+        endfor
+    endif
+
+    //
+    // Restock regs
+    //
+    if @inlist! 'actions' 'restock'
+        sysmsg "Checking / restocking regs" 88
+        pause 200
+        @clearlist 'actions'
+        // check if we are at bank
+        if not inrange 'banker' 30
+            // mana to recall
+            while mana < 15
+                useskill 'meditation'
+                pause 6000
+            endwhile
+            // recall
+            @canceltarget
+            cast "Recall"
+            waitfortarget 5000
+            target! 'bankrune'
+            pause 2000
+        endif
+
+        // check if we are at bank
+        if @inrange 'banker' 30
+            resync
+            msg "bank"
+            pause 1000
+            msg "bank"
+            pause 1000
+            useobject 'bankbag'
+            pause 2000
+            //
+            // Reg restocking is extremely unreliable!
+            //
+            for 0 to 'scriptregs'
+                removetimer 'restock'
+                createtimer 'restock'
+                while counttype scriptregs[] 'any' 'backpack' < 50
+                    sysmsg "restocking reagent" 44
+                    movetype scriptregs[] 'bankbag' 'backpack' 0 0 0 'any' 50
+                    pause 1500
+                    if timer 'restock' > 30000
+                        sysmsg "I cannot restock the script regs" 44
+                        stop
+                    endif
+                endwhile
+            endfor
+            for 0 to 'trainregs'
+                removetimer 'restock'
+                createtimer 'restock'
+                while counttype trainregs[] 'any' 'backpack' < 200
+                    sysmsg "restocking reagent" 44
+                    movetype trainregs[] 'bankbag' 'backpack' 0 0 0 'any' 200
+                    pause 1500
+                    if timer 'restock' > 30000
+                        sysmsg "I cannot restock the train regs" 44
+                        stop
+                    endif
+                endwhile
+            endfor
+            pushlist 'actions' 'recalltrain'    
+            continue
+        else
+            sysmsg "ERROR : Either start at bank or start with scriptregs in pack to recall to bank" 88
+            stop
+        endif
+    endif
+
+    //
+    // Recall train
+    //
+    if @inlist! 'actions' 'recalltrain'
+        sysmsg "Heading to training spot" 88
+        pause 200
+        @clearlist 'actions'
+        // mana to recall
+        while mana < 15
+            useskill 'meditation'
+            pause 6000
+        endwhile
+        // recall
+        @canceltarget
+        cast "Recall"
+        waitfortarget 5000
+        target! 'trainrune'
+        pause 2000
+        pushlist 'actions' 'train'  
+        continue
+    endif
+
+    // 
+    // Train
+    // 
+    if @inlist! 'actions' 'train'
+        pause 200
+        @clearlist 'actions'
+        //
+        // INSERT TRAINING SEQUENCE HERE
+        //
+        // START > 
+        if mana < 40
+            useskill 'meditation'
+            pause 11000
+        endif
+        if mana > 40
+            @canceltarget
+            cast "Flame Strike"
+            // anaconda
+            @findtype 0x15 'any' 'world' 0 10
+            waitfortarget 5000
+            target! 'found'
+        endif
+        msg "guards"
+        // < END
+        pushlist 'actions' 'train'
+    endif
+
+    //
+    // Server save fix
+    // 
+    if @injournal 'world will save' 'system'
+      sysmsg 'pausing for world save' 44
+      pause 30000
+      @clearjournal
+    endif
+
+    //
+    // skill check
+    //
+    if skill 'Magery' == 85
+      headmsg "Im done" 93
+      stop
+    endif
+
+    pushlist 'actions' 'train'
+
+    pause 1000
+
+endwhile

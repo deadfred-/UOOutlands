@@ -1,0 +1,85 @@
+// Credit : Craigs here
+//Saws
+///////
+if not @findobject 'carpmats'
+  headmsg 'Target Materials Container' 57
+  promptalias 'carpmats'
+endif
+if not listexists 'shittorecycle'
+  createlist 'shittorecycle'
+endif
+if list 'shittorecycle' == 0
+  //club 50-65
+  @pushlist 'shittorecycle' 0x13b4
+  //tambourine 65-75
+  @pushlist 'shittorecycle' 0xe9e
+  //bamboo flute 75-100
+  @pushlist 'shittorecycle' 0x2805
+  // carpentry repair kit 100-120
+  @pushlist 'shittorecycle' 0x1eba
+endif
+if not @findtype 0x1034 'any' 'backpack'
+  headmsg 'No More Saws' 44
+  stop
+endif
+if @findtype 0x1bd7 '0' 'backpack' and amount 'found' >= 10
+  if skill 'Carpentry' <= 49.9
+    headmsg 'Seek Training To 50.0'
+    pause 650
+  elseif skill 'Carpentry' < 65
+    usetype 0x1034
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 101
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 200
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Carpentry' < 75
+    usetype 0x1034
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 102
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 203
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Carpentry' < 100
+    usetype 0x1034
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 102
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 204
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Carpentry' < 120
+    usetype 0x1034
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 103
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 200
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Carpentry' == 120
+    headmsg 'Done' 5
+    stop
+  endif
+else
+  useobject 'carpmats'
+  pause 700
+  movetype 0x1bd7 'carpmats' 'backpack' 1 0 0 0 500
+  pause 1000
+endif
+if weight >= maxweight
+  sysmsg 'Overweight' 21
+  stop
+endif
+for 0 to 'shittorecycle'
+  while @findtype shittorecycle[] 'any' 'backpack'
+    usetype 0x1034
+    waitforgump 0x38920abd 2000
+    replygump 0x38920abd 3
+    waitforgump 0x38920abd 15000
+    @target! 'found'
+    waitforgump 0x38920abd 2000
+    pause 100
+  endwhile
+endfor

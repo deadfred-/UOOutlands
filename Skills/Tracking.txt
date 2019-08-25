@@ -1,0 +1,40 @@
+/////////////////////////////////////////////
+// UO Steam Skill Trainer - Tracking
+// for Outlands
+// by Jewele
+//
+// Trains tracking.
+//
+// How to use?
+// -----------
+// 1) Run script
+//
+// Version 2.0
+// -----------
+// Rewrite after asg removal
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+sysmsg "Buff Trainer Script - Tracking" 88
+sysmsg "Version 2.0" 88
+
+//
+// Turn on hunting
+//
+useskill 'Tracking'
+waitforgump 0xfe5c638b 5000
+replygump 0xfe5c638b 6
+waitforgump 0xfe5c638b 15000
+replygump 0xfe5c638b 2
+pause 5100
+
+//
+// Tracking
+//
+while not dead
+    useskill 'Tracking'
+    waitforgump 0xfe5c638b 5000
+    @replygump 0xfe5c638b 2
+    pause 5100
+endwhile

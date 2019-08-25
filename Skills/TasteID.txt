@@ -1,0 +1,23 @@
+/////////////////////////////////////////////
+// UO Steam Skill Buff Trainer
+// for Outlands
+// by Jewele
+// 
+// Version 2.0
+// -----------
+// Complete rewrite
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+sysmsg "Trainer Script - Taste ID" 88
+sysmsg "Version 2.0" 88
+
+while not dead
+
+    useskill 'Taste Identification'
+    waitfortarget 5000
+    targettile 'current'
+    pause 1000      
+
+endwhile

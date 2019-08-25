@@ -1,0 +1,161 @@
+/////////////////////////////////////////////
+// UO Steam Training Script
+// for Outlands
+// by Jewele
+// 
+// Magery 70-75 trainer. This macro will cast Invisibility
+// on yourself until you reach skill 75. Make a bag in your
+// bank a "reagent" bag and stock it with several 1000 of 
+// each training reg.
+// 
+// Why not use Energy Bolt to raise resist? Its slow (healing),
+// and you won't gain very much resist casting on yourself.
+// Self-casted resist gains are nerfed here. Its just not
+// worth a few points.
+//
+// How to use?
+// -----------
+// 1) Go to bank of your choice.
+// 2) Run script
+//
+// Script not running?
+//
+//    Clear your aliases. Go to Macros-Active Objects, and clear 
+//    all Active Objects. 
+//
+// Script buggy?
+//
+//    DO NOT share profiles between characters, it will confuse
+//    the aliases.
+//
+// Why only 75?
+//
+//    At 75 you switch to Flamestrikes at Prevalia Zoo. On this
+//    shard, you can gain on failures, and constantly failing =
+//    faster gains. Thus, I have found swapping to FS at 75
+//    instead of 80 is faster gains. If you don't like this,
+//    then amend the script below (its at bottom).
+//
+// Version 2.0
+// -----------
+// Rewrite for asg removal
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+sysmsg "Magery Trainer Script 70-75" 88
+sysmsg "Version 2.0" 88
+
+if not findalias 'bankbag'
+    msg "bank"
+    pause 1000
+    sysmsg "Select a bag with reagents in your bank" 88
+    promptalias 'bankbag'
+endif
+
+@removelist 'trainregs'
+@createlist 'trainregs'
+
+pushlist 'trainregs' 0xf88 // nightshade
+pushlist 'trainregs' 0xf7b // bloodmoss
+
+//
+// Actions list
+//
+@removelist 'actions'
+@createlist 'actions'
+pushlist 'actions' 'restock'
+
+while not dead
+
+    // 
+    // Reg check
+    // 
+    if not @inlist! 'actions' 'restock'
+        // train regs
+        for 0 to 'trainregs'
+            if @counttype trainregs[] 'any' 'backpack' < 5
+                @clearlist 'actions'
+                pushlist 'actions' 'restock'
+                continue
+            endif
+        endfor
+    endif
+
+    //
+    // Restock regs
+    //
+    if @inlist! 'actions' 'restock'
+        sysmsg "Checking / restocking regs" 88
+        pause 200
+        @clearlist 'actions'
+        resync
+        msg "bank"
+        pause 1000
+        msg "bank"
+        pause 1000
+        useobject 'bankbag'
+        pause 2000
+        //
+        // Reg restocking is extremely unreliable!
+        //
+        for 0 to 'trainregs'
+            removetimer 'restock'
+            createtimer 'restock'
+            while counttype trainregs[] 'any' 'backpack' < 100
+                sysmsg "restocking reagent" 44
+                movetype trainregs[] 'bankbag' 'backpack' 0 0 0 'any' 100
+                pause 1500
+                if timer 'restock' > 30000
+                    sysmsg "I cannot restock the train regs" 44
+                    stop
+                endif
+            endwhile
+        endfor
+        pushlist 'actions' 'train'    
+        continue
+    endif
+
+    // 
+    // Train
+    // 
+    if @inlist! 'actions' 'train'
+        pause 200
+        @clearlist 'actions'
+        //
+        // TRAINING
+        //
+        while mana < 50
+            useskill 'meditation'
+            pause 11500
+        endwhile
+        @canceltarget
+        cast "Invisibility"
+        waitfortarget 5000
+        target! 'self'
+        msg "guards"
+        pushlist 'actions' 'train'
+    endif
+
+    //
+    // Server save fix
+    // 
+    if @injournal 'world will save' 'system'
+      sysmsg 'pausing for world save' 44
+      pause 30000
+      @clearjournal
+    endif
+
+    //
+    // skill check
+    //
+    if skill 'Magery' == 75
+      headmsg "Im done" 93
+      stop
+    endif
+
+    pushlist 'actions' 'train'
+
+    pause 1000
+
+endwhile

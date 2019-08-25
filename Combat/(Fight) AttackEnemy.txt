@@ -1,0 +1,76 @@
+/////////////////////////////////////////////
+// UO Steam Attack Enemy Macro
+// for Outlands
+// by Jewele
+//
+// This is a "general" purpose attack enemy target macro.
+// Utilizing a dress profile, it will make sure you
+// re-equip any weapons which might have been disarmed
+// from <disarm> attacks or spellcasting.
+//
+// If you have an active target reticle, this will be
+// dropped on your 'enemy' target, if they are in range.
+// When not in range, the target reticle will be held,
+// making this an easy macro to spam until you get 
+// close enough to drop a spell.
+//
+// Questions?
+//
+//    If you have questions on why its written this way, or what I am doing,
+//    just PM me in discord. I could write articles on the UO targetting system,
+//    but I won't do that here.
+//
+// How to use:
+// ===========
+// 1) Save your current equipment as 'default'
+//    in dress macro. 
+// 2) Run script any time to attack your current target.
+//
+// Version History:
+// ================
+// * 1.0 initial release
+// * 1.1 holds target while up
+//
+// COPY HERE >>
+/////////////////////////////////////////////
+
+//
+// run dress macro
+//
+dress 'default'
+while dressing
+endwhile
+
+//
+// check 'enemy' alias and attack
+//
+if @findobject 'enemy'
+
+    // 
+    // drop queued spell if enemy in range
+    //
+    while targetexists 
+        if @inrange 'enemy' 15 and not dead 'enemy'
+            target! 'enemy' 1
+            pause 1000
+            break
+        else
+            headmsg "too far!" 44
+        endif    
+        pause 500    
+    endwhile
+
+    //
+    // enable war mode for warriors
+    //
+    if skill 'Fencing' > 50 or skill 'Mace Fighting' > 50 or skill 'Swordsmanship' > 50 or skill 'Archery' > 50 or skill 'Wrestling' > 50
+        attack! 'enemy'
+        if not war 'self'
+            warmode 'on'
+        endif
+    endif
+else
+    headmsg "No targets" 44
+endif
+@clearusequeue
+@cancelautotarget

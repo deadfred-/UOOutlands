@@ -1,0 +1,323 @@
+//Fonsie Was Here
+//50-65 Poison            Nightshade
+//65-90 Greater Heal      Ginseng
+//90-95 Greater Poison    Nightshade
+//95-115 Deadly Poison    Nightshade
+//115-120 Lethal Poison   Nightshade
+if not @findobject 'fonsKegs'
+  headmsg 'Select Empty Keg Bag' 21
+  promptalias 'fonsKegs'
+  headmsg 'Empty Keg Bag Aquired' 21 'fonsKegs'
+endif
+if not @findobject 'fonsShelf'
+  headmsg 'Select Secured Storage Shelf' 33
+  promptalias 'fonsShelf'
+  headmsg 'Storage Shelf Aquired' 21 'fonsShelf'
+endif
+if not @findobject 'trash'
+  if @findtype 0xe77 'any' 'ground' '1' '2'
+    setalias 'trash' 'found'
+    headmsg 'Trash' 21 'trash'
+  else
+    msg 'I wish to place a trash barrel' 21
+    pause 750
+    if @findtype 0xe77 'any' 'ground' '1' '2'
+      setalias 'trash' 'found'
+      headmsg 'Trash Aquired' 21 'trash'
+    endif
+  endif
+endif
+if skill 'alchemy' < 50
+  headmsg 'Train Alchemy' 66
+  stop
+endif
+////
+waitforcontext 'fonsShelf' 0 15000
+waitfortarget 3000
+target! 'self'
+waitforgump 0xc0b1026d 15000
+replygump 0xc0b1026d 0
+////
+if skill 'alchemy' < 65
+  useobject 'fonsShelf'
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 16
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 3
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 105
+  waitforgump 0xc0b1026d 15000
+  for 12
+    replygump 0xc0b1026d 120
+    waitforgump 0xc0b1026d 15000
+  endfor
+  replygump 0xc0b1026d 308
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 29
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 301
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 3
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 7
+  waitforgump 0xc0b1026d 15000
+endif
+////
+while skill 'alchemy' < 65
+  if not @findtype 0x1940 '0' 'backpack'
+    useobject 'fonsKegs'
+    pause 750
+    movetype 0x1940 'fonsKegs' 'backpack'
+    pause 750
+  endif
+  if not @findtype 0x1940 '0' 'backpack'
+    headmsg 'Out of Empty Kegs' 33
+    stop
+  endif
+  @unsetalias 'fonsPotion'
+  @unsetalias 'fonsEkeg'
+  @unsetalias 'fonsFkeg'
+  if @findtype 0xf0a 'any' 'backpack'
+    @setalias 'fonsPotion' 'found'
+  endif
+  if @findtype 0x1940 '0' 'backpack'
+    @setalias 'fonsEkeg' 'found'
+  endif
+  if @findtype 0x1940 '363' 'backpack'
+    @setalias 'fonsFkeg' 'found'
+  endif
+  if @findobject 'fonsPotion' 'any' 'backpack'
+    moveitem 'fonsFkeg' 'trash' 0 0 0 1
+    pause 750
+    moveitem 'fonsPotion' 'fonsEkeg'
+    pause 750
+  endif
+  if weight < maxweight
+    while counttype 0xf88 'any' 'backpack' < 4
+      waitforcontext 'fonsShelf' 1 15000
+    endwhile
+  else
+    headmsg "Weight Maxed, Can't Use Shelf" 33
+    stop
+  endif
+  if @counttype 0xe9b 'any' 'backpack' < 1
+    waitforcontext 'fonsShelf' 1 15000
+    pause 750
+  endif
+  if not @findtype 0xe9b 'any' 'backpack'
+    headmsg 'No More Mortar & Pestle' 44
+    stop
+  endif
+  usetype 0xe9b 'any' 'backpack'
+  waitforgump 0x38920abd 1000
+  replygump 0x38920abd 106
+  waitforgump 0x38920abd 5000
+  replygump 0x38920abd 201
+  waitforgump 0x38920abd 5000
+  waitforgump 0x38920abd 5000
+endwhile
+////
+waitforcontext 'fonsShelf' 0 15000
+waitfortarget 3000
+target! 'self'
+waitforgump 0xc0b1026d 15000
+replygump 0xc0b1026d 0
+////
+if skill 'alchemy' < 90
+  useobject 'fonsShelf'
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 16
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 3
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 104
+  waitforgump 0xc0b1026d 15000
+  for 12
+    replygump 0xc0b1026d 119
+    waitforgump 0xc0b1026d 15000
+  endfor
+  replygump 0xc0b1026d 308
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 29
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 301
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 3
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 7
+  waitforgump 0xc0b1026d 15000
+endif
+////
+while skill 'alchemy' < 90
+  ////
+  if @findtype 0xf0a 'any' 'backpack'
+    moveitem 'found' 'trash' 0 0 0 1
+    pause 750
+  endif
+  if @findtype 0x1940 '363' 'backpack'
+    moveitem 'found' 'trash' 0 0 0 1
+    pause 750
+  endif
+  ////
+  if not @findtype 0x1940 '0' 'backpack'
+    useobject 'fonsKegs'
+    pause 750
+    movetype 0x1940 'fonsKegs' 'backpack'
+    pause 750
+  endif
+  if not @findtype 0x1940 '0' 'backpack'
+    headmsg 'Out of Empty Kegs' 33
+    stop
+  endif
+  @unsetalias 'fonsPotion'
+  @unsetalias 'fonsEkeg'
+  @unsetalias 'fonsFkeg'
+  if @findtype 0xf0c 'any' 'backpack'
+    @setalias 'fonsPotion' 'found'
+  endif
+  if @findtype 0x1940 '0' 'backpack'
+    @setalias 'fonsEkeg' 'found'
+  endif
+  if @findtype 0x1940 '253' 'backpack'
+    @setalias 'fonsFkeg' 'found'
+  endif
+  if @findobject 'fonsPotion' 'any' 'backpack'
+    moveitem 'fonsFkeg' 'fonsShelf' 0 0 0 1
+    pause 750
+    moveitem 'fonsPotion' 'fonsEkeg'
+    pause 750
+  endif
+  if weight < maxweight
+    while counttype 0xf85 'any' 'backpack' < 6
+      waitforcontext 'fonsShelf' 1 15000
+    endwhile
+  else
+    headmsg "Weight Maxed, Can't Use Shelf" 33
+    stop
+  endif
+  if @counttype 0xe9b 'any' 'backpack' < 1
+    waitforcontext 'fonsShelf' 1 15000
+    pause 750
+  endif
+  if not @findtype 0xe9b 'any' 'backpack'
+    headmsg 'No More Mortar & Pestle' 44
+    stop
+  endif
+  usetype 0xe9b 'any' 'backpack'
+  waitforgump 0x38920abd 1000
+  replygump 0x38920abd 100
+  waitforgump 0x38920abd 5000
+  replygump 0x38920abd 202
+  waitforgump 0x38920abd 5000
+  waitforgump 0x38920abd 5000
+endwhile
+////
+waitforcontext 'fonsShelf' 0 15000
+waitfortarget 3000
+target! 'self'
+waitforgump 0xc0b1026d 15000
+replygump 0xc0b1026d 0
+////
+if skill 'alchemy' < 120
+  useobject 'fonsShelf'
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 16
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 3
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 105
+  waitforgump 0xc0b1026d 15000
+  for 12
+    replygump 0xc0b1026d 120
+    waitforgump 0xc0b1026d 15000
+  endfor
+  replygump 0xc0b1026d 308
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 29
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 301
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 3
+  waitforgump 0xc0b1026d 15000
+  replygump 0xc0b1026d 7
+  waitforgump 0xc0b1026d 15000
+endif
+while skill 'alchemy' < 120
+  ////
+  if @findtype 0x1940 '253' 'backpack'
+    moveitem 'found' 'fonsShelf' 0 0 0 1
+    pause 750
+  endif
+  ////
+  if not @findtype 0x1940 '0' 'backpack'
+    useobject 'fonsKegs'
+    pause 750
+    movetype 0x1940 'fonsKegs' 'backpack'
+    pause 750
+  endif
+  if not @findtype 0x1940 '0' 'backpack'
+    headmsg 'Out of Empty Kegs' 33
+    stop
+  endif
+  @unsetalias 'fonsPotion'
+  @unsetalias 'fonsEkeg'
+  @unsetalias 'fonsFkeg'
+  if @findtype 0xf0a 'any' 'backpack'
+    @setalias 'fonsPotion' 'found'
+  endif
+  if @findtype 0x1940 '0' 'backpack'
+    @setalias 'fonsEkeg' 'found'
+  endif
+  if @findtype 0x1940 '363' 'backpack'
+    @setalias 'fonsFkeg' 'found'
+  endif
+  if @findobject 'fonsPotion' 'any' 'backpack'
+    moveitem 'fonsFkeg' 'fonsShelf' 0 0 0 1
+    pause 750
+    moveitem 'fonsPotion' 'fonsEkeg'
+    pause 750
+  endif
+  if weight < maxweight
+    while counttype 0xf88 'any' 'backpack' < 10
+      waitforcontext 'fonsShelf' 1 15000
+    endwhile
+  else
+    headmsg "Weight Maxed, Can't Use Shelf" 33
+    stop
+  endif
+  if @counttype 0xe9b 'any' 'backpack' < 1
+    waitforcontext 'fonsShelf' 1 15000
+    pause 750
+  endif
+  if not @findtype 0xe9b 'any' 'backpack'
+    headmsg 'No More Mortar & Pestle' 44
+    stop
+  endif
+  if skill 'alchemy' < 95
+    usetype 0xe9b 'any' 'backpack'
+    waitforgump 0x38920abd 1000
+    replygump 0x38920abd 106
+    waitforgump 0x38920abd 5000
+    replygump 0x38920abd 202
+    waitforgump 0x38920abd 5000
+    waitforgump 0x38920abd 5000
+  elseif skill 'alchemy' < 115
+    usetype 0xe9b 'any' 'backpack'
+    waitforgump 0x38920abd 1000
+    replygump 0x38920abd 106
+    waitforgump 0x38920abd 5000
+    replygump 0x38920abd 203
+    waitforgump 0x38920abd 5000
+    waitforgump 0x38920abd 5000
+  elseif skill 'alchemy' < 120
+    usetype 0xe9b 'any' 'backpack'
+    waitforgump 0x38920abd 1000
+    replygump 0x38920abd 106
+    waitforgump 0x38920abd 5000
+    replygump 0x38920abd 204
+    waitforgump 0x38920abd 5000
+    waitforgump 0x38920abd 5000
+  else
+    stop
+  endif
+endwhile

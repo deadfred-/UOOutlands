@@ -1,0 +1,43 @@
+/////////////////////////////////////////////
+// UO Steam Fishing Macro
+// for Outlands
+// by Jewele
+//
+//
+// How to use:
+// ===========
+// 1. Empty your hands or equip a pole
+// 2. Run script
+//
+// Version 1.0
+// -----------
+// First release! yay!
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+@useobject 'backpack'
+pause 1000
+while not dead
+  // gump
+  while @gumpexists 'any'
+    headmsg 'answer gump'
+    playsound 'bell.wav'
+    pause 20000
+  endwhile
+  // pole
+  if @findlayer 'self' 2
+    setalias 'pole' 'found'
+  else
+    if not @findtype 0xdc0 'any' 'backpack'
+      headmsg 'get a pole'
+      stop
+    endif
+    setalias 'pole' 'found'
+    equipitem 'pole' 2
+    pause 1000
+  endif
+  @useobject 'pole'
+  waitfortarget 5000
+  target! 'self'
+  pause 11500
+endwhile

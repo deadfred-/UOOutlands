@@ -1,0 +1,40 @@
+/////////////////////////////////////////////
+// UO Steam Skill Trainer - Arms Lore
+// for Outlands
+// by Jewele
+//
+// Trains arms lore on your newbie dagger.
+//
+// How to use?
+// -----------
+// 1) Run script
+//
+// Script not running?
+//
+//    Clear your aliases. Go to Macros-Active Objects, and clear 
+//    all Active Objects. 
+//
+// Script buggy?
+//
+//    DO NOT share profiles between characters, it will confuse
+//    the aliases.
+//
+// Version 2.0
+// -----------
+// Rewrite after asg removal
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+sysmsg "Buff Trainer Script - Arms Lore" 88
+sysmsg "Version 2.0" 88
+
+@useobject 'backpack'
+pause 1000
+
+while not dead
+    @findtype 0xf52 'any' 'backpack'
+    autotargetobject 'found'
+    useskill 'Arms Lore'
+    pause 2100
+endwhile

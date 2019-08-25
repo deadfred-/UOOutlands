@@ -1,0 +1,171 @@
+/////////////////////////////////////////////
+// UO Steam Get Closest Enemy Macro (for PVM)
+// for Outlands
+//
+// Greetings and thank you for your interest in this script!
+// This macro is *primarily* for PVP, and is a "general purpose"
+// script for most players on the shard doing PVP. Its primary
+// purpose is to scan around you for the closest target, sets
+// that target to your 'enemy' alias, and attacks that target.
+//
+// Please please PLEASE read ALL my notes on on how this script 
+// works. It will help you understand why I made certain choices. 
+//
+// How to use:
+// ===========
+// 1. Enable [X] Highlight Current Target in UOSteam
+// 2. Record a dress profile named 'default' with your 
+//    weapon equipped (or spellbook, etc).
+// 3. Run macro any time to locate nearest target and attack.
+//
+// What makes it PVP?
+// 
+//    If you look at the filter below, it has a "humanoid" entry. 
+//    Thus you will pick up any type of player closest to you,
+//    matching the existing filter. Filters will match if you are
+//    a PK murderer or not.
+//
+// Friends list
+// 
+//    Add anything you do not want to target to your friends list. This includes
+//    guild PKs, their pets, guildies who flag grey, etc. Once on that list,
+//    the macro will no longer pick them up.
+//
+// Why not 'transformation'?
+//
+//    See ScriptJournal.txt
+//
+// Why is it attacking my target?
+//
+//    This will highlight your target.
+//    For more notes on this, see ScriptJournal.txt
+//
+// Active target prompts
+//
+//    An active target from spell or command, will be dropped on your 
+//    enemy BEFORE you attack, and before you run your dress profile.
+//
+//    For example, you can get a Flamestrike ready, run this script and it will
+//    drop the spell on the target, equip your weapons, then attack.
+//
+// Dress profiles
+//
+//    Dress profiles are highly recommended. Record your equipment and name it 
+//    'default'. Lower 'd' default.
+//
+// Its stuck!
+//
+//    If you are running a dress profile with equipment you do not possess,
+//    the script will halt and not work. Remove or clear the profile. Then
+//    leave unset or re-import a new set of equipment.
+//
+// Questions?
+//
+//    If you have questions on why its written this way, or what I am doing,
+//    just PM me in discord. I could write articles on the UO targetting system,
+//    but I won't do that here.
+//
+// How to use:
+// ===========
+// 1) Make sure you have '[X] Highlight Current Target' enabled in UOSteam
+// 2) Record a dress profile with your current equipment called 'default'
+// 3) Run script any time to get closest enemy.
+//
+// Version History:
+// ----------------
+// 1.0 complete rewrite
+// 1.1 toggles war mode to clear current combatant
+//
+// >> COPY BELOW >> 
+/////////////////////////////////////////////
+
+//
+// Toggle war mode
+//
+if not war 'self'
+    warmode 'on'
+endif
+
+//
+// Create temporary list
+// 
+@removelist 'enemies'
+@createlist 'enemies'
+
+//
+// Scan for targets
+//
+for 0 to 20
+  if murderer 'self'
+    @getenemy 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+  else
+    @getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+  endif
+  @pushlist! 'enemies' 'enemy'
+endfor
+
+//
+// Create a distances list, seeding from 1
+// 
+@removelist 'distances'
+@createlist 'distances'
+pushlist 'distances' 1
+pushlist 'distances' 2
+pushlist 'distances' 3
+pushlist 'distances' 4
+pushlist 'distances' 5
+pushlist 'distances' 6
+pushlist 'distances' 7
+pushlist 'distances' 8
+pushlist 'distances' 9
+pushlist 'distances' 10
+pushlist 'distances' 11
+pushlist 'distances' 12
+pushlist 'distances' 13
+pushlist 'distances' 14
+pushlist 'distances' 15
+
+//
+// Sort by distance
+//  
+@unsetalias 'enemy'
+for 0 to 'distances'
+    if not @findobject 'enemy'
+        for 0 to 'enemies'
+            if @inrange enemies[] distances[] and not dead enemies[]
+                setalias 'enemy' enemies[]
+                break
+            endif
+        endfor
+    else
+        break
+    endif
+endfor
+
+//
+// Drop target on enemy
+//
+if @findobject 'enemy' and targetexists
+    target! 'enemy'
+endif
+
+//
+// run dress macro
+//
+dress 'default'
+while dressing
+endwhile
+
+//
+// attack or message
+//
+if @findobject 'enemy'
+    headmsg "*Attacking*" 22
+    attack! 'enemy'
+    msg "All kill"
+    waitfortarget 5000
+    target! 'enemy'
+    @cleartargetqueue
+else
+    headmsg "No targets" 44
+endif

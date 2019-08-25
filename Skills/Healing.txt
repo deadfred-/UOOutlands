@@ -1,0 +1,80 @@
+/////////////////////////////////////////////
+// UO Steam Healing Training Macro
+// for Outlands
+// by Jewele
+// 
+// Uses a magical wizards hat to train healing. Best used
+// from 50-80, then from there, you can train on ghosts.
+// 
+// How to use?
+// -----------
+// 1) Buy a magical wizards hat (mage shop)
+// 2) Stock lots of bandages in your pack
+// 3) Run script
+//
+// Version 2.0
+// -----------
+// Rewrite for asg removal
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+sysmsg "Healing Trainer Script" 88
+sysmsg "Version 2.0" 88
+
+@useobject 'backpack'
+pause 1000
+
+//
+// While alive
+//
+while not dead
+    //
+    // If wearing a hat, dump it to pack
+    //
+    if @findlayer 'self' 6
+        useobject 'found'
+        pause 1000
+    endif
+    // 
+    // Check hat in pack
+    //
+    if not @findtype 0x1718 'any' 'backpack'
+        headmsg "I need a wizard's hat!" 88
+        stop
+    endif
+    //
+    // Bandage check
+    //
+    if counttype '0xe21' 'any' 'backpack' == 0
+        sysmsg "No bandages!" 44
+        stop
+    endif     
+    //
+    // Equip and unequip hat
+    //
+    @findtype 0x1718 'any' 'backpack'
+    @useobject 'found'
+    pause 1000
+    @useobject 'found'
+    pause 1000
+    //
+    // Heal
+    //
+    @removetimer 'healing'
+    @createtimer 'healing'
+    @canceltarget
+    @clearjournal
+    bandageself!
+    while timer 'healing' < 20000
+        if @injournal 'heal' 'system'
+            break
+        endif
+        if @injournal 'cure' 'system'
+            break
+        endif
+        if @injournal 'finish' 'system'
+            break
+        endif
+    endwhile
+endwhile

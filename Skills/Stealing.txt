@@ -1,0 +1,67 @@
+/////////////////////////////////////////////
+// UO Steam Skill Trainer - Stealing
+// for Outlands
+// by Jewele
+//
+// Steals a bottle from your pack horse and puts
+// it back. Run until you are GM.
+//
+// How to use?
+// -----------
+// 1) Buy a pack horse
+// 2) Buy 1 bottle and put on packy
+// 3) Run script
+//
+// Script not running?
+//
+//    Clear your aliases. Go to Macros-Active Objects, and clear
+//    all Active Objects.
+//
+// Script buggy?
+//
+//    DO NOT share profiles between characters, it will confuse
+//    the aliases.
+//
+// Versions
+// --------
+// 1.0 - New.
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+sysmsg "Stealing Script Trainer" 88
+@clearjournal
+sysmsg "Version 2.0" 88
+@clearjournal
+@useobject 'backpack'
+pause 1000
+if not findalias 'pony'
+  sysmsg "Select pony" 88
+  promptalias 'pony'
+endif
+@useobject 'pony'
+while not dead
+  //
+  // Steal
+  //
+  useskill 'Stealing'
+  waitfortarget 5000
+  target! 'pony'
+  pause 11500
+
+  //
+  // Move back to Pony
+  //
+  if counttype 0xf0e 'any' 'backpack' > 0
+    pause 20000
+    @movetype 0xf0e 'backpack' 'pony' 0 0 0 'any' 1
+    pause 1000
+  endif
+
+  //
+  // skill check
+  //
+  if skill 'Stealing' == 100
+    headmsg "Im done" 93
+    stop
+  endif
+endwhile

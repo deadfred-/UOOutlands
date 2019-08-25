@@ -1,0 +1,190 @@
+/////////////////////////////////////////////
+// UO Steam PVP Heal Potion Pouch macro
+//
+// Greetings! This is a PVP script you can run to 
+// keep yourself bandaged during fights. It does
+// some extra stuff too, specifically:
+// * Bandages you if needed
+// * Drinks cure pots if needed
+// * Drinks heal pots if needed
+// * Pops a pouch if paralyzed
+//
+// [X] Make sure you enable disarm before potions
+//
+// You can run this any time, and switch back
+// to it to resume an existing bandage.
+//
+// Server saves will cause problems for accurate
+// timing statements. 
+//
+// Bandage timer display has been calibrated
+// for different dexterity values. I'd say its
+// accurate within 1 second at this point.
+//
+// You can adjust when you want to drink a heal,
+// I put it at -60 hit points. Feel free to modify.
+// 
+// Important Notes
+// ---------------
+// * Enable [X] Check hands before potions
+// * Set "Delay between actions" to [500ms]
+//
+// How to use?
+// -----------
+// 1) Run script
+// 
+// Versions
+// --------
+// 1.0 - Inital version
+// 1.1 - Suppressed healing timer check with ampersand
+// 1.3 - Removed out of cures/heals warnings, created too much spam
+// 1.4 - Removed dress call - it was interrupting immediate recasts
+//
+// START COPY >>
+/////////////////////////////////////////////
+
+//
+// Determine whether its a start or resume
+//
+if @timerexists 'healing' and @timer 'healing' < 15000
+  sysmsg "Resuming bandage macro..." 55
+else
+  sysmsg "Bandage macro starting..." 94
+  @removetimer 'healing'
+  @removelist 'tics'
+endif
+
+//
+// Open pack (forces bandage inventory)
+// if no bandages found. 
+//
+if counttype '0xe21' 'any' 'backpack' == 0
+    useobject! 'backpack'
+    pause 500
+endif
+
+//
+// Loop
+//
+while not dead
+
+  //
+  // Create message list
+  //
+  if not @timerexists 'healing' and not @listexists 'tics'
+    @removelist 'tics'
+    @createlist 'tics'
+    pushlist 'tics' '1 second' 'front'
+    pushlist 'tics' '2 seconds' 'front'
+    pushlist 'tics' '3 seconds' 'front'
+    pushlist 'tics' '4 seconds' 'front'
+    pushlist 'tics' '5 seconds' 'front'
+    pushlist 'tics' '6 seconds' 'front'
+    pushlist 'tics' '7 seconds' 'front'
+    pushlist 'tics' '8 seconds' 'front'
+    pushlist 'tics' '9 seconds' 'front'
+    if dex < 95
+      pushlist 'tics' '10 seconds' 'front'
+    endif
+    if dex < 85
+      pushlist 'tics' '11 seconds' 'front'
+    endif
+    if dex < 75
+      pushlist 'tics' '12 seconds' 'front'
+    endif
+    if dex < 65
+      pushlist 'tics' '13 seconds' 'front'
+    endif
+    if dex < 55
+      pushlist 'tics' '14 seconds' 'front'
+    endif
+  endif
+
+  //
+  // Paralyzed check
+  //
+  while paralyzed and counttype 0xe79 38 'backpack' > 0
+    msg "[pouch"
+    pause 200
+  endwhile
+
+  //
+  // Cures
+  //
+  if poisoned
+    if @findtype! 0xf07 0 'backpack'
+      headmsg "[Cure] Potion" 194
+      useobject! 'found'
+      pause 1000
+    endif
+  endif
+
+  //
+  // Heals
+  //
+  if diffhits > 60 and not poisoned 
+    if @findtype 0xf0c 0 'backpack'
+        headmsg "[Heal] Potion" 53
+        useobject! 'found'
+        pause 1000
+    endif
+  endif
+
+  //
+  // Bandage check
+  //
+  if @counttype '0xe21' 'any' 'backpack' == 0
+    sysmsg "No bandages!" 28
+    pause 500
+    continue
+  elseif @counttype '0xe21' 'any' 'backpack' < 20
+    sysmsg "Low bandages" 28
+  endif
+
+  //
+  // Resuming existing heal
+  //
+  if @timerexists 'healing'
+    if @injournal 'heal' 'system' 
+      @removetimer 'healing'
+      continue
+    elseif @injournal 'cure' 'system' 
+      @removetimer 'healing'
+      continue
+    elseif @injournal 'finish' 'system'
+      @removetimer 'healing'
+      continue
+    endif
+    if timer 'healing' > 15000
+      @removetimer 'healing'
+    endif
+  else
+    //
+    // Start heal
+    //
+    if diffhits > 5 and counttype '0xe21' 'any' 'backpack' > 0
+      if not hidden
+        @createtimer 'healing'
+        headmsg "++bandaging++" 73
+        bandageself
+        @clearjournal      
+      endif
+    endif
+  endif
+
+  //
+  // Every loop iteration is fixed 1 second
+  //
+  pause 1000
+
+  //
+  // Feedback
+  //
+  if @timerexists 'healing' and @listexists 'tics'
+    headmsg tics[0] 73
+    poplist 'tics' 'front'
+    if list 'tics' == 0
+      @removelist 'tics'
+    endif
+  endif
+endwhile

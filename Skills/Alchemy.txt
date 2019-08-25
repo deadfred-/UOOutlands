@@ -1,0 +1,4 @@
+To train Alchemy,
+use \Crafting\Alchemy.txt
+and just put in the potion
+you need for gains.

@@ -1,0 +1,84 @@
+/////////////////////////////////////////////
+// UO Steam Skill Trainer - Arms Lore
+// for Outlands
+// by Jewele
+//
+// Trains discordance at Prevalia Zoo.
+//
+// How to use?
+// -----------
+// 1) Buy a bunch of instruments from store
+// 2) Go to Prevalia Zoo near Anacondas
+// 3) Run
+//
+// Script not running?
+//
+//    Clear your aliases. Go to Macros-Active Objects, and clear 
+//    all Active Objects. 
+//
+// Script buggy?
+//
+//    DO NOT share profiles between characters, it will confuse
+//    the aliases.
+//
+// Version 2.0
+// -----------
+// Rewrite after asg removal
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+sysmsg "Buff Trainer Script - Discordance" 88
+sysmsg "Version 2.0" 88
+
+@useobject 'backpack'
+pause 1000
+
+//
+// Create instrument
+//
+@removelist 'instrumentlist'
+@createlist 'instrumentlist'
+@pushlist 'instrumentlist' 0xeb1
+@pushlist 'instrumentlist' 0xeb2
+@pushlist 'instrumentlist' 0xeb3
+@pushlist 'instrumentlist' 0xe9c
+@pushlist 'instrumentlist' 0xe9d
+@pushlist 'instrumentlist' 0xe9e
+
+while not dead
+    //
+    // Select instrument
+    //
+    for 0 to 'instrumentlist'
+        @findtype instrumentlist[]
+        @setalias 'instrument' 'found'
+    endfor
+    //
+    // Check we have instrument
+    //
+    if not @findobject 'instrument' 'any' 'backpack'
+        headmsg 'No instruments!' '55' 'self'
+        stop    
+    endif
+    @canceltarget
+    //
+    // Use instrument
+    //
+    @useobject 'instrument'
+    pause 1000
+    //
+    // anaconda
+    //
+    @findtype 0x15 'any' 'world' 0 12
+    useskill 'Discordance'
+    waitfortarget 5000
+    target! 'found'
+    pause 5100
+    if @injournal 'disrupting' 'system'
+        pause 6000
+        @clearjournal
+    endif
+    msg "guards"
+    pause 1000
+endwhile

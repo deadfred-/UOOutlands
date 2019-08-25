@@ -1,0 +1,145 @@
+/////////////////////////////////////////////
+// UO Steam Ship Sink Macro
+// for Outlands
+// by Jewele
+//
+// Ship Assist macro which you run after you have cleared
+// a ship of crew and want to sink it for doubloons. I run
+// this and go watch a Twitch stream while im sinking a ship.
+// Sitting there pressing FIRE to sink a ship is BORING -
+// so I wrote this helper script.
+//
+// Features:
+// ---------
+// * Heals your crew
+// * Auto-selects HULL firing mode
+// * Sinks ship
+//
+// Adjust timers based on your ship size. These timers
+// are for a Carrack.
+//
+// How to use:
+// -----------
+// 1. Put ship to EAST of ship you want to sink
+// 2. Run macro
+// 3. Walk close to crew to heal them
+//
+// Notes:
+// ------
+// World saves can screw up the HULL selection.
+//
+// Versions
+// -----------
+// 1.0 - First release! yay!
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+@clearjournal
+@unsetalias 'hurt'
+@removelist 'crew'
+@createlist 'crew'
+@removetimer 'fire'
+@createtimer 'fire'
+@removelist 'shots'
+@createlist 'shots'
+@removetimer 'healing'
+sysmsg "Auto Sink running" 88
+while not dead
+  if list 'shots' == 0
+    msg '[reload'
+    //
+    // Carrack
+    //
+    pause 12000
+    pushlist 'shots' 'boom'
+    pushlist 'shots' 'boom'
+    pushlist 'shots' 'boom'
+    pushlist 'shots' 'boom'
+    pushlist 'shots' 'boom'
+    pushlist 'shots' 'boom'
+    pushlist 'shots' 'boom'
+    pushlist 'shots' 'boom'
+    pushlist 'shots' 'boom'
+    pushlist 'shots' 'boom'
+  endif
+  //
+  // Carrack is pause ~25s after reload command, and 14s between shots.
+  //
+  if list 'shots' > 0 and timer 'fire' > 12000
+    //
+    // Set hull
+    //
+    if list 'shots' == 10
+      headmsg "firing"
+      msg "[Firecannons"
+      waitfortarget 5000
+      target! 'self'
+      waitforgump 0xc671aa26 5000
+      replygump 0xc671aa26 1
+      pause 1000
+    endif
+    //
+    // Commence firing
+    //
+    msg "[Firecannons"
+    waitfortarget 5000
+    targettileoffset -6 0 0
+    settimer 'fire' 0
+    poplist 'shots' 'front'
+  endif
+  //
+  // Get crew
+  //
+  if list 'crew' == 0
+    @clearignorelist
+    while @findtype 0x190 'any' 'ground' '2' or @findtype 0x191 'any' 'ground' '2'
+      if friend 'found'
+        @pushlist! 'crew' 'found'
+      endif
+      @ignoreobject 'found'
+    endwhile
+  endif
+  //
+  // wait for bandage finish
+  //
+  if @timerexists 'healing'
+    if timer 'healing' > 15000
+      @removetimer 'healing'
+    endif
+    if @injournal 'heal' 'system'
+      @removetimer 'healing'
+    endif
+    if @injournal 'cure' 'system'
+      @removetimer 'healing'
+    endif
+    if @injournal 'finish' 'system'
+      @removetimer 'healing'
+    endif
+  endif
+  //
+  // Does crew need a bandage?
+  //
+  if not @timerexists 'healing'
+    while list 'crew' > 0
+      if @inrange 'crew[0]' 2
+        @clearjournal
+        usetype 0xe21 'any' 'backpack'
+        waitfortarget 5000
+        target! 'crew[0]'
+        @createtimer 'healing'
+        pause 1000
+        if @injournal 'not damaged' 'system'
+          @removetimer 'healing'
+          poplist 'crew' 'front'
+          continue
+        endif
+        headmsg "(healing crew)" 88
+        break
+      else
+        pause 2000
+        poplist 'crew' 'front'
+      endif
+    endwhile
+  endif
+  pause 1000
+endwhile

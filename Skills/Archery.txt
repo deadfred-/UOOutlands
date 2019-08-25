@@ -1,0 +1,241 @@
+/////////////////////////////////////////////
+// UO Steam Skill Trainer - Archery
+// for Outlands
+// by Jewele
+//
+// Recalls you back and forth from bank to Prevalia zoo,
+// where you will train your archery. Even if you don't 
+// plan to have magery in final build, just get enough
+// to recall, then drop it. Its a real time saver.
+//
+// How to use?
+// -----------
+// 1) Mark a rune at a bank
+// 2) Mark a rune at anacondas at Prevalia Zoo
+// 3) Place both runes in your backpack
+// 4) Place crossbow bolts (20K), recall regs in a bank bag
+// 5) Put about 5-6 Heavy crossbows in your pack
+// 6) Start at -bank- with banker in sight
+// 7) Run script
+//
+// Script not running?
+//
+//    Clear your aliases. Go to Macros-Active Objects, and clear 
+//    all Active Objects. 
+//
+// Script buggy?
+//
+//    DO NOT share profiles between characters, it will confuse
+//    the aliases.
+//
+// Version 2.0
+// -----------
+// Rewrite after asg removal
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+sysmsg "Trainer Script - Archery" 88
+sysmsg "Version 2.0" 88
+
+@useobject 'backpack'
+pause 2000
+
+if not findalias 'bankrune'
+    sysmsg "Select rune for bank access" 88
+    promptalias 'bankrune'
+endif
+if not findalias 'trainrune'
+    sysmsg "Select rune for training location" 88
+    promptalias 'trainrune'
+endif
+if not findalias 'bankbag'
+    msg "bank"
+    pause 1000
+    sysmsg "Select a bag with reagents and arrows in your bank" 88
+    promptalias 'bankbag'
+endif
+if not findalias 'banker'
+    sysmsg "Select the banker at your bank" 88
+    promptalias 'banker'
+endif
+
+//
+// Actions list
+//
+@removelist 'actions'
+@createlist 'actions'
+pushlist 'actions' 'restock'
+
+//
+// Script Regs (stocks 50)
+// 
+@removelist 'scriptregs'
+@createlist 'scriptregs'
+pushlist 'scriptregs' 0xf7a // pearl
+pushlist 'scriptregs' 0xf7b // moss
+pushlist 'scriptregs' 0xf86 // root
+
+//
+// Bolts (stocks 500)
+// 
+@removelist 'ammo'
+@createlist 'ammo'
+pushlist 'ammo' 0x1bfb // bolt
+
+msg "bank"
+pause 1000
+msg "bank"
+pause 1000
+
+while not dead
+
+    if skill 'archery' == 100
+        headmsg "woohoo! im done!"
+        stop
+    endif
+
+    // 
+    // Reg/arrow check
+    // 
+    if not @inlist! 'actions' 'restock'
+        // script regs
+        for 0 to 'scriptregs'
+            if @counttype scriptregs[] 'any' 'backpack' < 5
+                @clearlist 'actions'
+                pushlist 'actions' 'restock'
+                continue
+            endif
+        endfor
+        // bolts
+        for 0 to 'ammo'
+            if @counttype ammo[] 'any' 'backpack' < 10
+                @clearlist 'actions'
+                pushlist 'actions' 'restock'
+                continue
+            endif
+        endfor
+    endif
+
+    //
+    // Restock regs
+    //
+    if @inlist! 'actions' 'restock'
+        sysmsg "Checking / restocking regs and ammo" 88
+        pause 200
+        @clearlist 'actions'
+        // check if we are at bank
+        if not inrange 'banker' 30
+            // mana to recall
+            while mana < 15
+                useskill 'meditation'
+                pause 6000
+            endwhile
+            // recall
+            @canceltarget
+            cast "Recall"
+            waitfortarget 5000
+            target! 'bankrune'
+            pause 2000
+        endif
+
+        // check if we are at bank
+        if @inrange 'banker' 30
+            resync
+            msg "bank"
+            pause 1000
+            msg "bank"
+            pause 1000
+            useobject 'bankbag'
+            pause 2000
+            //
+            // Reg restocking is extremely unreliable!
+            //
+            for 0 to 'scriptregs'
+                removetimer 'restock'
+                createtimer 'restock'
+                while counttype scriptregs[] 'any' 'backpack' < 50
+                    sysmsg "restocking reagent" 44
+                    movetype scriptregs[] 'bankbag' 'backpack' 0 0 0 'any' 50
+                    pause 1500
+                    if timer 'restock' > 30000
+                        sysmsg "I cannot restock the script regs" 44
+                        stop
+                    endif
+                endwhile
+            endfor
+            for 0 to 'ammo'
+                removetimer 'restock'
+                createtimer 'restock'
+                while counttype ammo[] 'any' 'backpack' < 200
+                    sysmsg "restocking ammo" 44
+                    movetype ammo[] 'bankbag' 'backpack' 0 0 0 'any' 200
+                    pause 1500
+                    if timer 'restock' > 30000
+                        sysmsg "I cannot restock my ammunition" 44
+                        stop
+                    endif
+                endwhile
+            endfor
+            pushlist 'actions' 'recalltrain'    
+            continue
+        else
+            sysmsg "ERROR : Either start at bank or start with scriptregs in pack to recall to bank" 88
+            stop
+        endif
+    endif
+
+    //
+    // Recall train
+    //
+    if @inlist! 'actions' 'recalltrain'
+        sysmsg "Heading to training spot" 88
+        pause 200
+        @clearlist 'actions'
+        // mana to recall
+        while mana < 15
+            useskill 'meditation'
+            pause 6000
+        endwhile
+        // recall
+        @canceltarget
+        cast "Recall"
+        waitfortarget 5000
+        target! 'trainrune'
+        pause 2000
+        pushlist 'actions' 'train'  
+        continue
+    endif
+
+    // 
+    // Train
+    // 
+    if @inlist! 'actions' 'train'
+        pause 200
+        @clearlist 'actions'
+        //
+        // INSERT TRAINING SEQUENCE HERE
+        //
+        // START > 
+        // arm heavy crossbow
+        if not @findlayer 'self' 1
+            @findtype 0x13fd 'any' 'backpack'
+            @equipitem 'found' 1
+            pause 1000
+        endif
+        @canceltarget
+        @findtype 0x15 'any' 'world' 0 10
+        attack! 'found'
+        pause 5000
+        // < END
+        pushlist 'actions' 'train'
+    endif
+
+    pause 200
+
+    //
+    // Server save fix
+    // 
+    pushlist 'actions' 'train'
+
+endwhile

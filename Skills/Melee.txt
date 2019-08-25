@@ -1,0 +1,134 @@
+/////////////////////////////////////////////
+// UO Steam Skill Trainer - Melee
+// for Outlands
+// by Jewele
+//
+// Generic melee trainer for any builds. Adapts to what you 
+// have in pack.
+//
+// Training Swords? 
+//      Stock pack with Wooden Training Swords.
+// Training Macing? 
+//      Stock pack with Wooden Training Clubs.
+// Training Fencing? 
+//      Stock pack with Wooden Training Kryss.
+// Training Wrestling? 
+//      Remove all Wooden weapons.
+// Training Healing? 
+//      Add bandages to your pack.
+// Training Parry? 
+//      Add buckler to your pack.
+//      Make sure your target is attacking back.
+//
+// How to use?
+// -----------
+// 1) Log in an alt training dummy
+// 2) Buy supplies
+// 3) Run script
+// 4) Toggle war mode on dummy if you don't want them
+//    to attack back.
+//
+// Script not running?
+//
+//    Clear your aliases. Go to Macros-Active Objects, and clear 
+//    all Active Objects. 
+//
+// Script buggy?
+//
+//    DO NOT share profiles between characters, it will confuse
+//    the aliases.
+//
+// Versions
+// --------
+// 2.0 Rewrite after asg removal
+// 2.1 Added target removal, which was occuring after server save
+//     and preventing healing
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+sysmsg "Buff Trainer Script - Melee" 88
+sysmsg "Version 2.1" 88
+
+//
+// Weaps
+// 
+@removelist 'weps'
+@createlist 'weps'
+pushlist 'weps' 0x13b9 // wooden sword
+pushlist 'weps' 0x13b4 // wooden club
+pushlist 'weps' 0x1401 // wodden kryss
+
+//
+// Shields
+// 
+@removelist 'shields'
+@createlist 'shields'
+pushlist 'shields' 0x1b73 // metal buckler
+
+if not findalias 'dummy'
+    sysmsg "Select dummy for training" 88
+    promptalias 'dummy'
+endif
+
+while not dead
+
+    @canceltarget
+
+    //
+    // Arm weapon
+    //
+    if not @findlayer 'self' 1
+        for 0 to 'weps'
+            if @findtype weps[] 'any' 'backpack'
+                @equipitem 'found' 1
+                pause 1000
+                break
+            endif
+        endfor
+    endif
+
+    //
+    // Arm shield
+    //
+    if not @findlayer 'self' 2
+        for 0 to 'shields'
+            if @findtype shields[] 'any' 'backpack'
+                @equipitem 'found' 2
+                pause 1000
+                break
+            endif
+        endfor
+    endif
+
+    //
+    // Dummy check and attack
+    //
+    if @inrange 'dummy' 1
+        attack! 'dummy'
+        @clearjournal
+        pause 5000
+    else
+        headmsg "Where is my training dummy?" 44            
+        warmode 'off'
+        stop
+    endif
+
+    //
+    // Heal Me
+    //
+    if findtype 0xe21 'any' 'backpack'
+        if diffhits > 10
+            headmsg "(healing me)"
+            bandageself
+            pause 20000
+        endif
+        headmsg "(healing dummy)"
+        useobject 'found'
+        waitfortarget 5000
+        target! 'dummy'
+        pause 20000
+    endif
+
+endwhile
+

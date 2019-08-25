@@ -1,0 +1,101 @@
+// Credit : Craigs here
+///////
+if not @findobject 'tinkermats'
+  headmsg 'Target Materials Container' 57
+  promptalias 'tinkermats'
+endif
+if not listexists 'shittorecycleT'
+  createlist 'shittorecycleT'
+endif
+if list 'shittorecycleT' == 0
+  //lantern 50-75
+  @pushlist 'shittorecycleT' 0xa22
+  //iron lockpicks 75-80
+  @pushlist 'shittorecycleT' 0x14fd
+  //keyring 80-100
+  @pushlist 'shittorecycleT' 0x1011
+  //candelabra 100-120
+  @pushlist 'shittorecycleT' 0xa27
+endif
+if @counttype 0x1eb8 'any' 'backpack' < 2
+  usetype 0x1eb8
+  waitforgump 0x38920abd 15000
+  replygump 0x38920abd 100
+  waitforgump 0x38920abd 15000
+  replygump 0x38920abd 205
+  waitforgump 0x38920abd 15000
+  waitforgump 0x38920abd 15000
+endif
+if not @findtype 0x1eb8 'any' 'backpack'
+  headmsg 'No More Tinker Tools' 44
+  stop
+endif
+if @findtype 0x1bf2 '0' 'backpack' and amount 'found' >= 20
+  if skill 'Tinkering' <= 49.9
+    headmsg 'Seek Training To 50.0'
+    pause 650
+  elseif skill 'Tinkering' < 75
+    usetype 0x1eb8
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 9
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 103
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 11
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 200
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Tinkering' < 80
+    usetype 0x1eb8
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 102
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 200
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Tinkering' < 100
+    usetype 0x1eb8
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 109
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 207
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Tinkering' < 120
+    usetype 0x1eb8
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 9
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 103
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 11
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 202
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Tinkering' == 120
+    headmsg 'Done' 5
+    stop
+  endif
+else
+  useobject 'tinkermats'
+  pause 700
+  movetype 0x1bf2 'tinkermats' 'backpack' 1 0 0 0 500
+  pause 1000
+endif
+if weight >= maxweight
+  sysmsg 'Overweight' 21
+  stop
+endif
+for 0 to 'shittorecycleT'
+  while @findtype shittorecycleT[] 'any' 'backpack'
+    usetype 0x1eb8
+    waitforgump 0x38920abd 2000
+    replygump 0x38920abd 3
+    waitforgump 0x38920abd 15000
+    @target! 'found'
+    waitforgump 0x38920abd 2000
+    pause 100
+  endwhile
+endfor

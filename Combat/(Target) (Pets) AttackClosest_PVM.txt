@@ -1,0 +1,109 @@
+/////////////////////////////////////////////
+// UO Steam Get Closest Enemy Macro (for PVM)
+// for Outlands
+//
+// See `(Target) AttackClosest_PVM.txt` script for notes.
+//
+// This version just adds a pet attack step.
+//
+// Version History:
+// ----------------
+// 1.0 complete rewrite
+// 1.1 toggles war mode to clear current combatant
+// 1.2 a short pause is required before herding
+//
+// >> COPY BELOW >> 
+/////////////////////////////////////////////
+
+//
+// Toggle war mode
+//
+warmode 'on'
+warmode 'off'
+
+//
+// Create temporary list
+// 
+@removelist 'enemies'
+@createlist 'enemies'
+
+//
+// Scan for targets
+//
+for 0 to 20
+    @getenemy 'murderer' 'enemy' 'criminal' 'gray' 'next'
+    @pushlist! 'enemies' 'enemy'
+endfor
+
+//
+// Create a distances list, seeding from 1
+// 
+@removelist 'distances'
+@createlist 'distances'
+pushlist 'distances' 1
+pushlist 'distances' 2
+pushlist 'distances' 3
+pushlist 'distances' 4
+pushlist 'distances' 5
+pushlist 'distances' 6
+pushlist 'distances' 7
+pushlist 'distances' 8
+pushlist 'distances' 9
+pushlist 'distances' 10
+pushlist 'distances' 11
+pushlist 'distances' 12
+pushlist 'distances' 13
+pushlist 'distances' 14
+pushlist 'distances' 15
+
+//
+// Sort by distance
+//  
+@unsetalias 'enemy'
+for 0 to 'distances'
+    if not @findobject 'enemy'
+        for 0 to 'enemies'
+            if @inrange enemies[] distances[] and not dead enemies[]
+                setalias 'enemy' enemies[]
+                break
+            endif
+        endfor
+    else
+        break
+    endif
+endfor
+
+//[]
+// Drop target on enemy
+//
+if @findobject 'enemy' and targetexists
+    target! 'enemy'
+endif
+
+//
+// run dress macro
+//
+dress 'default'
+while dressing
+endwhile
+
+//
+// attack or message
+//
+if @findobject 'enemy' and @inrange 'enemy' 15
+    headmsg "*Attacking*" 22
+    attack! 'enemy'
+    target! 'enemy'
+    msg "ALL KILL"
+    waitfortarget 5000
+    target! 'enemy'
+    pause 500
+    // Herd
+    if findtype '0xe81' 'any' 'backpack'
+        useobject 'found'
+        waitfortarget 5000
+        target! 'enemy'
+    endif
+else
+    headmsg "No targets" 44
+endif

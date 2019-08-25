@@ -1,0 +1,30 @@
+/////////////////////////////////////////////
+// UO Steam Spell Combat Macro
+// for Outlands
+// by Jewele
+//
+// This is a multi-purpose macro for casting a harmful spell.
+//
+// This version will cast and hold the spell. Note that target
+// queues are cleared, so you dont accidentally nuke yourself,
+// a pet or a friend.
+//
+// How to use:
+// -----------
+// 1. Modify macro for harmful spell you want to cast.
+// 2. Paste that into a new macro and keybind
+//
+// Version 1.0
+// -----------
+// First release
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+@cleartargetqueue
+@canceltarget
+pause 100
+//
+// Cast spell
+// (modify this)
+cast 'Explosion'
+waitfortarget 5000

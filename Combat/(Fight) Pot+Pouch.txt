@@ -1,0 +1,94 @@
+/////////////////////////////////////////////
+// UO Steam PVP Heal Potion Pouch macro
+//
+// Greetings! This is a PVP script you can run to 
+// keep yourself bandaged during fights. It does
+// some extra stuff too, specifically:
+// * Drinks cure pots if needed
+// * Drinks heal pots if needed
+// * Pops a pouch if paralyzed
+//
+// [X] Make sure you enable disarm before potions
+//
+// Server saves will cause problems for accurate
+// timing statements. 
+//
+// You can adjust when you want to drink a heal,
+// I put it at -60 hit points. Feel free to modify.
+// 
+// Important Notes
+// ---------------
+// * Enable [X] Check hands before potions
+// * Set "Delay between actions" to [500ms]
+//
+// How to use?
+// -----------
+// 1) Run script
+// 
+// Versions
+// --------
+// 1.0 - Inital version
+// 1.1 - Suppressed healing timer check with ampersand
+// 1.3 - Removed out of cures/heals warnings, created too much spam
+// 1.4 - Removed dress call - it was interrupting immediate recasts
+//
+// START COPY >>
+/////////////////////////////////////////////
+
+//
+// Determine whether its a start or resume
+//
+sysmsg "Potion/Pouch macro starting..." 94
+
+//
+// Open pack (forces inventory)
+//
+useobject! 'backpack'
+
+//
+// Loop
+//
+while not dead
+
+  //
+  // Paralyzed check
+  //
+  while paralyzed and counttype 0xe79 38 'backpack' > 0
+    msg "[pouch"
+    pause 500
+  endwhile
+
+  //
+  // Cure check
+  //
+  while poisoned and counttype 0xf07 'any' 'backpack' > 0
+    headmsg "[Cure] Potion" 194
+    usetype 0xf07
+    pause 5000
+  endwhile
+
+  //
+  // Heals
+  //
+  if diffhits > 60 and not poisoned 
+    if @findtype 0xf0c 0 'backpack'
+        headmsg "[Heal] Potion" 53
+        useobject! 'found'
+        pause 1000
+    endif
+  endif
+
+  //
+  // Refresh
+  //
+  if stam < maxstam
+    if @findtype 0xf0b 0 'backpack'
+      headmsg '[Refresh] Potion' 93
+      @usetype 0xf0b
+      pause 750
+    endif
+  endif
+
+  pause 500
+
+endwhile

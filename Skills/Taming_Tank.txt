@@ -1,0 +1,59 @@
+/////////////////////////////////////////////
+// UO Steam Taming Macro
+// for Outlands
+//
+// This is a good script if you are using 1 tank pet
+// while you tame and you know which specific mob
+// you are trying to tame.
+//
+// Versions
+// ========
+// 1.0 - Initial version calibrated for 25 dex
+// 1.1 - Only uses bandages if needed
+//       Spams pet rename
+//
+/////////////////////////////////////////////
+headmsg "Select creature to tame" 55
+promptalias 'tobetamed'
+headmsg "Select pet" 55
+promptalias 'pet'
+if @findobject 'tobetamed'
+    sysmsg "Taming" 44
+    while name 'tamethis' != 'ImTamed'
+        @setskill 'animal taming' 'up'
+        useskill 'animal taming'
+        waitfortarget 5000
+        target! 'tamethis'
+        if diffhits 'pet' > 10
+            @usetype '0xe21' 'any' 'backpack'
+            waitfortarget 5000
+            target! 'pet'
+            break
+        endif
+        pause 6000
+        if diffhits 'pet' > 10
+            @usetype '0xe21' 'any' 'backpack'
+            waitfortarget 5000
+            target! 'pet'
+            break
+        endif
+        pause 6000
+
+        //
+        // Renaming and detecting renames is very buggy
+        //
+        @rename 'tamethis' 'ImTamed'
+        pause 500
+        @rename 'tamethis' 'ImTamed'
+        pause 500
+        @rename 'tamethis' 'ImTamed'
+        pause 500
+        @rename 'tamethis' 'ImTamed'
+        pause 500
+        
+    endwhile
+    @ignoreobject 'tobetamed'
+    @unsetalias 'tobetamed'
+    @setskill 'animal taming' 'locked'
+    msg "ImTamed release"
+endif

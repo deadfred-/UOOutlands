@@ -1,0 +1,46 @@
+/////////////////////////////////////////////
+// UO Steam Skill Buff Trainer
+// for Outlands
+// by Jewele
+// 
+// Version 2.0
+// -----------
+// Complete rewrite
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+sysmsg "Trainer Script - Remove Trap" 88
+sysmsg "Version 2.0" 88
+
+@useobject 'backpack'
+pause 1000
+
+while not dead
+
+    //
+    // Check we have tools
+    //
+    if not @findtype '0x7149' 'any' 'backpack'
+        headmsg 'No tools!' '55' 'self'
+        stop
+    endif
+    @clearjournal
+    //
+    // Use trainer box
+    //
+    @findtype '0xe80' 'any' 'backpack'
+    @useobject 'found'
+    removetimer 'tool'
+    createtimer 'tool'
+    waitforgump 'found' 5000
+    replygump 'found' 7
+    // max 10s attempt, in case of server lag
+    while timer 'tool' < 10000
+        if @injournal 'progress' 'system'
+            break
+        endif
+        pause 100
+    endwhile
+
+endwhile

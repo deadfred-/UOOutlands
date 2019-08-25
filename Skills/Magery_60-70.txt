@@ -1,0 +1,58 @@
+/////////////////////////////////////////////
+// UO Steam Training Script
+// for Outlands
+// by Jewele
+// 
+// Magery 60-70 trainer. The fastest way to train
+// magery from 60-70 is to run to Shelter Island
+// dungeon and cast Paralyze on yourself.
+// 
+// How to use?
+// -----------
+// 1) Stock regs
+// 2) Go to Starter Dungeon
+// 3) Run script
+//
+// Version 2.0
+// -----------
+// Rewrite for asg removal
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+sysmsg "Magery Trainer Script 60-70" 88
+sysmsg "Version 2.0" 88
+
+@useobject 'backpack'
+pause 1000
+
+while not dead
+
+  //
+  // mana
+  //
+  while mana < 40
+      useskill 'meditation'
+      pause 11500
+  endwhile
+
+  //
+  // cast
+  //
+  @canceltarget
+  cast "paralyze"
+  waitfortarget 5000
+  target! 'self'
+  pause 1000
+
+  //
+  // skill check
+  //
+  if skill 'Magery' == 70
+    headmsg "Im done" 93
+    stop
+  endif
+
+  pause 1000
+
+endwhile
