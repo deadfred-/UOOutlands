@@ -6,16 +6,16 @@ UOSteam client scripts for use with Ultima Online Outlands server. These are pub
 
 Script contributions can be sent to my discord account **Jewele**
 
-##Secret Scripts
+## Secret Scripts
 
 I have several personal scripts available, you can now purchase from me, for 5 Prevalia donation coins (each). The charged cost represents the amount of time I have spent writing, testing, and perfecting them. 
 
 | Script | Purpose|
 | ------------- | ------------- |
-| Stealing | For your thieves! Lift loot right out of other player's packs. Everyone who has ran this says it works great.  |
+| :hand: Stealing | For your thieves! Lift loot right out of other player's packs. Everyone who has ran this says it works great.  |
 | :moyai: Recall Miner  | Its back!! The insanely successful recall miner (this isnt just a single spot mining btw). I also send you a guide on how to mark spots. Made insane amounts of ingots for my friends and myself with this one.  |
 | :evergreen_tree: Recall Lumberjack  | Hands down, the script I am *most* proud of and the one I have only shared with the closest friends. Everyone which has tried it had one word to describe it - 'amazing'  |
-| Pirate Scripts  | You get (3) of my pirate scripts which automate popular builds. These taunt, throw explodes, heal your crew, cure, drink heal pots, and so much more. Only shared with my close pirate buddies, who love them! |
+| :ship: Pirate Scripts  | You get (3) of my pirate scripts which automate popular builds. These taunt, throw explodes, heal your crew, cure, drink heal pots, and so much more. Only shared with my close pirate buddies, who love them! I run 3 accounts on a ship all automated, I barely have to do anything but fire the cannons and move around! |
 
 By purchasing a script from me, you get:
 ⋅⋅* My help customizing it to your needs.
