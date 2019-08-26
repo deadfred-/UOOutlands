@@ -18,7 +18,7 @@ I have several personal scripts available, you can now purchase from me, for 5 P
 | :ship: Pirate Scripts  | You get (3) of my pirate scripts which automate popular builds. These taunt, throw explodes, heal your crew, cure, drink heal pots, and so much more. Only shared with my close pirate buddies, who love them! I run 3 accounts on a ship all automated, I barely have to do anything but fire the cannons and move around! |
 
 By purchasing a script from me, you get:
-⋅⋅* My help customizing it to your needs.
-⋅⋅* Full refund of donation coins if you simply don't like it.
+* My help customizing it to your needs.
+* Full refund of donation coins if you simply don't like it.
 
 :skull_and_crossbones: Don't forget to visit my web site www.outlandstreasure.com.
