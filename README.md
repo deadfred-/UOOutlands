@@ -19,7 +19,11 @@ I have several personal scripts available, you can now purchase from me, for 5 P
 | :moneybag: Vendor Scam | Check every item (drops, scrolls, bags, chests) on a vendor to see if somebody accidentally priced it at 999! Run at vendor malls ~ this is a fun one.|
 
 By purchasing a script from me, you get:
-* My help customizing it to your needs.
+* My (instant) response any time I am on to help you with them.
+* My help customizing it to your needs and any time you require to get it going.
 * Full refund of donation coins if you simply don't like it.
+
+Why sell them? 
+* They took an immense amount time to create and test. Time I could have spent in game in farming. If I give them away, then its a double whammie - not only have I missed farming, but I've given you scripts to compete with my ability to sell ingots/lumber. See? Asking for a few donation coins offsets this risk and lost time/revenue.
 
 :skull_and_crossbones: Don't forget to visit my web site www.outlandstreasure.com.
