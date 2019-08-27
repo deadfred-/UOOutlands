@@ -21,7 +21,7 @@ I have several personal scripts available, you can now purchase from me, for 5 P
 By purchasing a script from me, you get:
 * My (instant) response any time I am on to help you with them.
 * My help customizing it to your needs and any time you require to get it going.
-* Full refund of donation coins if you simply don't like it.
+* Full refund of donation coins if you simply don't like it. Maybe it didn't work out the way you liked, or wasn't what you expected. No problem. I'm happy to give coins back if you promise me you wont use it :)
 
 Why sell them? 
 * They took an immense amount time to create and test. Time I could have spent in game in farming. If I give them away, then its a double whammie - not only have I missed farming, but I've given you scripts to compete with my ability to sell ingots/lumber. See? Asking for a few donation coins offsets this risk and lost time/revenue.
