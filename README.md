@@ -2,9 +2,13 @@
 
 ![Alt text](banner.jpg?raw=true "Title")
 
-UOSteam client scripts for use with Ultima Online Outlands server. These are public scripts you are welcome to use and share. Please check back frequently for updates.
+UOSteam client scripts for use with Ultima Online Outlands server. These are public scripts you are welcome to use and share. Please check back frequently for updates. I have written *most* of these scripts myself, but occasionally I will find a good script someone else wrote and add it in. If you would like me to host one of your scripts, send it to me.
 
 Script contributions can be sent to my discord account **Jewele**
+
+## Need help
+
+Im here to help and I will as time permits (I like to play too). But I've been writing UO Steam scripts for years - and I'd love to help you with a problem you are having! Just hit me up - no charge, really!
 
 ## Secret Scripts
 
