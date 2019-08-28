@@ -12,7 +12,7 @@ I have several personal scripts available, you can now purchase from me, for 5 P
 
 | Script | Purpose|
 | ------------- | ------------- |
-| :moyai: Recall Miner  | Its back!! The insanely successful recall miner (this isnt just a single spot mining btw). I also send you a guide on how to mark spots. Made insane amounts of ingots for my friends and myself with this one.  Ran this myself or a week straight, next week I made a 120 Blacksmith and 120 Tinker. Sick ingots and near-PK proof to boot. I love this one. |
+| :moyai: Recall Miner  | Its back!! The insanely successful recall miner (this isnt just a single spot mining btw). I also send you a guide on how to mark spots. Made insane amounts of ingots for my friends and myself with this one.  Ran this myself or a week straight, next week I made a 120 Blacksmith and 120 Tinker. Sick ingots and near-PK proof to boot. I love this one. Watch it in action at https://www.youtube.com/watch?v=Ce5CWOk2Il0 |
 | :evergreen_tree: Recall Lumberjack  | Hands down, the script I am *most* proud of and the one I have only shared with the closest friends. Everyone which has tried it had one word to describe it - 'amazing'  |
 | :ship: Pirate Scripts  | You get (3) of my pirate scripts which automate popular builds. These taunt, throw explodes, heal your crew, cure, drink heal pots, and so much more. Only shared with my close pirate buddies, who love them! I run 3 accounts on a ship all automated, I barely have to do anything but fire the cannons and move around! |
 | :moneybag: Vendor Scam | Check every item (drops, scrolls, bags, chests) on a vendor to see if somebody accidentally priced it at 999! Run at vendor malls ~ this is a fun one.|
