@@ -3,39 +3,60 @@
 // for Outlands
 // by Jewele
 //
-// This is a "general" purpose attack enemy target macro.
-// Utilizing a dress profile, it will make sure you
-// re-equip any weapons which might have been disarmed
-// from <disarm> attacks or spellcasting.
+// General purpose attack macro :
+// ==============================
+// * Plays dress macro to re-equip your weapons
+// * Drops a held spell onto your enemy (if in range)
+// * Active spell prompts will be held if enemy out of range
+// * Puts you into war mode if enemy nearby
 //
-// If you have an active target reticle, this will be
-// dropped on your 'enemy' target, if they are in range.
-// When not in range, the target reticle will be held,
-// making this an easy macro to spam until you get 
-// close enough to drop a spell.
+// This macro is best used in conjunction with another macro
+// which sets your 'enemy' alias.
+//   
+//   For example:
+// 
+//   [MOUSE SCROLL DOWN] - get nearest enemy
+//   [MOUSE SCROLL UP] - attack enemy (this macro)
 //
-// Questions?
+//  TIP! Macros like these work well if you have a spell up and
+//       are chasing someone. You can run the macro over and over
+//       again to drop the spell, but it won't drop unless they
+//       are in range.
 //
-//    If you have questions on why its written this way, or what I am doing,
-//    just PM me in discord. I could write articles on the UO targetting system,
-//    but I won't do that here.
+//  TIP! If you are an archer, pre-cast explosion, run this macro
+//       as it will arm your bow and begin attacking your enemy. 
+//       If your enemy is in spell range, the spell will also be
+//       dropped.
+//
+//  TIP! If you don't have 100 wrestling, you want to make sure you 
+//       arm your weapon ASAP - as you are very vulerable without
+//       it. This is why this macro makes sure to rearm your loadout.
+//
+// Requires:
+// =========
+// 1. You to have an enemy set
+// 2. You have recorded your equipment in a dress profile
+//
+// When to use:
+// ============
+// * You want to drop a spell on an enemy in range
+// * You want to attack an enemy
 //
 // How to use:
 // ===========
-// 1) Save your current equipment as 'default'
+// 1. Save your current equipment as 'default'
 //    in dress macro. 
-// 2) Run script any time to attack your current target.
-//
-// Version History:
-// ================
-// * 1.0 initial release
-// * 1.1 holds target while up
+// 2. Run script any time to attack your current target.
 //
 // COPY HERE >>
 /////////////////////////////////////////////
 
 //
 // run dress macro
+// 
+// On Outlands you can cast a spell and equip your weapons
+// while the spell is still active, which makes this part
+// quite nice for caster templates.
 //
 dress 'default'
 while dressing
@@ -45,6 +66,8 @@ endwhile
 // check 'enemy' alias and attack
 //
 if @findobject 'enemy'
+
+    attack! 'enemy'
 
     // 
     // drop queued spell if enemy in range
@@ -61,16 +84,15 @@ if @findobject 'enemy'
     endwhile
 
     //
-    // enable war mode for warriors
+    // set war mode
     //
-    if skill 'Fencing' > 50 or skill 'Mace Fighting' > 50 or skill 'Swordsmanship' > 50 or skill 'Archery' > 50 or skill 'Wrestling' > 50
-        attack! 'enemy'
-        if not war 'self'
-            warmode 'on'
-        endif
+    if not war 'self'
+       warmode 'on'
     endif
+
 else
     headmsg "No targets" 44
 endif
+
 @clearusequeue
 @cancelautotarget
