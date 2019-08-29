@@ -43,9 +43,7 @@
 //
 // [Enemy] above head?
 // ===================
-// Read notes below on how to enable [enemy] head message below. However, since its scanning
-// everything around you, it will display all names found. The last one displayed is your
-// actual enemy.
+// Read notes below on how to disable [enemy] head messages below. 
 //
 // Versions:
 // =========
@@ -125,13 +123,13 @@ endif
 for 0 to 20
     @clearlist 'found'
     if murderer 'self'
-        // enables name scrolling
-        // getenemy 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
-        @getenemy 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+        // disables name scrolling
+        // @getenemy 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+        getenemy 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
     else
-        // enables name scrolling
-        // getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
-        @getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+        // disables name scrolling
+        // @getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+        getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
     endif
     if @findobject 'enemy'
         @pushlist! 'found' 'enemy'
