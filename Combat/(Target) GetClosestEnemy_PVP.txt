@@ -12,105 +12,142 @@
 // combine this with another key, that drops a harmful spell or attack
 // on your 'enemy' target.
 //
-// This is the fastest algorithm we have ever tested. It even beats
-// target scripts that make lists and loop by range.
-//
-// What if I am a PK?
-// 
-//    Copy/paste : 
-//    [getenemy 'innocent' 'murderer' 'enemy' 'criminal' 'gray' 'humanoid']
-//
 // How to use:
 // ===========
 // 1) Run script to set your 'enemy' alias
 // 2) Run another script or keybind to attack/target 'enemy'
 //
+// Notes:
+// ======
+//
+// The 'getenemy' api sets your 'enemy' alias to an enemy _and_ highlights that target.
+// The 'enemy' alias can also be set (setalias), but doing so will _not highlight_ your 
+// target [entire mobile becomes one color]. This is why just using 'setalias' for the 
+// 'enemy' alias creates confusion. If you attack your 'enemy' alias, it will now be 
+// highlighted, but we don't want to do that, we just want it set AND highlighted.
+//
+// How do we get the closest enemy selected, set it to the 'enemy' alias, and highlight it?
+//
+// Well, for one, we end up with a very long script to handle something which should have
+// been enabled in the client on this server from the start!!! (rage). Ok its not, well
+// run the script below to handle this prickly problem.
+//
+// The first part of the script deals with getting the closest enemy - using a list or ranges
+// then determining which target is actually closest to you. We aren't done yet, we have to 
+// use the 'getenemy' api call to land on that mobile so that it highlights it for us... then
+// stop. At this point, both enemy is set AND its highlighted, which is what we want. 
+//
+// Ultimately you end up with two 'getenemy' loops. One to find/sort everything closest to you.
+// The second to get the highlighting to work. All this code just to find and highlight my 
+// closest enemy? Yep.
+//
+// [Enemy] above head?
+// ===================
+// Read notes below on how to enable [enemy] head message below. However, since its scanning
+// everything around you, it will display all names found. The last one displayed is your
+// actual enemy.
+//
 // Versions:
 // =========
-// 1.0 New Version
+// 8.28.2019 - complete rewrite to set your 'enemy' alias AND highlight it.
 //
 // >> COPY BELOW >> 
 /////////////////////////////////////////////
 
-@unsetalias 'enemy'
-@cleartargetqueue
-getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid'
-if @inrange 'enemy' 0
-  stop
-else
-  getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid'
-endif
-if @inrange 'enemy' 1
-  stop
-else
-  getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid'
-endif
-if @inrange 'enemy' 2
-  stop
-else
-  getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid'
-endif
-if @inrange 'enemy' 3
-  stop
-else
-  getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid'
-endif
-if @inrange 'enemy' 4
-  stop
-else
-  getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid'
-endif
-if @inrange 'enemy' 5
-  stop
-else
-  getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid'
-endif
-if @inrange 'enemy' 6
-  stop
-else
-  getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid'
-endif
-if @inrange 'enemy' 7
-  stop
-else
-  getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid'
-endif
-if @inrange 'enemy' 8
-  stop
-else
-  getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid'
-endif
-if @inrange 'enemy' 9
-  stop
-else
-  getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid'
-endif
-if @inrange 'enemy' 10
-  stop
-else
-  getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid'
-endif
-if @inrange 'enemy' 11
-  stop
-else
-  getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid'
-endif
-if @inrange 'enemy' 12
-  stop
-else
-  getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid'
-endif
-if @inrange 'enemy' 13
-  stop
-else
-  getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid'
-endif
-if @inrange 'enemy' 14
-  stop
-else
-  getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid'
-endif
-if @inrange 'enemy' 15
+@createlist 'enemies'
+@clearlist 'enemies'
+
+//
+// Scan for targets
+//
+for 0 to 20
+    if murderer 'self'
+        @getenemy 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+    else
+        @getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+    endif
+    if @findobject 'enemy'
+        @pushlist! 'enemies' 'enemy'
+    endif
+endfor
+
+//
+// Create a distances list, seeding from 1
+// 
+@createlist 'distances'
+@clearlist 'distances'
+pushlist 'distances' 1
+pushlist 'distances' 2
+pushlist 'distances' 3
+pushlist 'distances' 4
+pushlist 'distances' 5
+pushlist 'distances' 6
+pushlist 'distances' 7
+pushlist 'distances' 8
+pushlist 'distances' 9
+pushlist 'distances' 10
+pushlist 'distances' 11
+pushlist 'distances' 12
+pushlist 'distances' 13
+pushlist 'distances' 14
+pushlist 'distances' 15
+
+//
+// Sort by distance
+//  
+@createlist 'closest'
+@clearlist 'closest'
+for 0 to 'distances'
+    if list 'closest' == 0
+        for 0 to 'enemies'
+            if @inrange enemies[] distances[] and not dead enemies[]
+                @pushlist! 'closest' enemies[]
+                break
+            endif
+        endfor
+    else
+        break
+    endif
+endfor
+
+//
+// check if no targets
+//
+if list 'closest' == 0
+  headmsg "No targets" 44
   stop
 endif
-headmsg "No targets" 44
+
+//
+// highlight target
+//
+@createlist 'found'
+for 0 to 20
+    @clearlist 'found'
+    if murderer 'self'
+        // enables name scrolling
+        // getenemy 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+        @getenemy 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+    else
+        // enables name scrolling
+        // getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+        @getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+    endif
+    if @findobject 'enemy'
+        @pushlist! 'found' 'enemy'
+    endif
+
+    //
+    // we got 'getenemy' to land on the correct mobile, break
+    //
+    if @inlist 'closest' 'found[0]'
+        break
+    endif
+endfor
+
+//
+// attack or message
+//
+if not @findobject 'enemy'
+    headmsg "No targets" 44
+endif
