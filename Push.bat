@@ -1,5 +1,5 @@
 git checkout --orphan future-master
-git add -am 'Commits'
+git add -A
 git commit 
 git branch -D master
 git branch -m master
