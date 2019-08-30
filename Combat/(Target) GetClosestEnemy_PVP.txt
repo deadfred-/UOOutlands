@@ -123,13 +123,13 @@ endif
 for 0 to 20
     @clearlist 'found'
     if murderer 'self'
-        // disables name scrolling
-        // @getenemy 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
-        getenemy 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+        // enables name scrolling
+        // getenemy 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+        @getenemy 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
     else
-        // disables name scrolling
-        // @getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
-        getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+        // enables name scrolling
+        // getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+        @getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
     endif
     if @findobject 'enemy'
         @pushlist! 'found' 'enemy'
