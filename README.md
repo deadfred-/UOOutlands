@@ -12,7 +12,7 @@ Im here to help and I will as time permits (I like to play too). But I've been w
 
 ## Secret Scripts
 
-I have several personal scripts available, you can now purchase from me, for 5 Prevalia donation coins (each). The charged cost represents the amount of time I have spent writing, testing, and perfecting them. 
+I have several personal scripts available, you can now purchase from me, for 5 Prevalia donation coins (each). The charged cost represents the amount of time I have spent writing, testing, and perfecting them. The cost also covers helping you - these are much more complicated scripts (500+ lines) and *everyone* has questions about getting them going or customizing them to their needs.
 
 | Script | Purpose|
 | ------------- | ------------- |
