@@ -1,0 +1,112 @@
+/////////////////////////////////////////////
+// UO Steam Recall Lumberjack
+// for Outlands
+// by Jewele
+//
+// Recall lumberjack which recalls you to each location in a runebook,
+// and gathers resources in a semi-random pattern around you.
+//
+// What does this do for you:
+// --------------------------
+// * Recalls to 15 spots in a runebook
+// * At each location chops multiple spots
+// * Carries few regs and 1 axe
+// * Walking pattern is never the same between two spots
+// * Audible alarms for miner damage, and captcha
+// * Heals you with audible alarm if you take damage
+// * Detects nearby PKs and recalls you away
+// * Recalls immediately if aggro in range
+// * Works at bank or home
+// * Drops wood off at 500 logs
+// 
+// Character Build:
+// ----------------
+// 50+ Lumberjack
+// 60 Magery
+// 100 Tracking
+//
+// Requirements:
+// -------------
+// One Blessed Runebook (in pack)
+//
+// Runebook Preparation:
+// ---------------------
+// 1) Mark first rune in blessed runebook as DEFAULT
+// 2) SET THE RUNE DEFAULT - this is not automatic!
+// 3) Fill rest of runebook with chopping locations.
+//
+// How to use?
+// -----------
+// 1) Decide what container you want to use -
+//    either a box/bag in your bank or a chest
+//    at your home. This will be known as <box>
+// 2) Put axes in <box>
+// 3) Put recall and heal regs in <box>
+// 4) If you have tracking: * Reds, * Closest, [X] House
+// 5) Run script
+//
+// Bank or home?
+// -------------
+// This was written for both, actually, so you might see
+// your character say "bank" even though you are running
+// it from home. If running from home, when prompted for
+// the banker, select the box.
+//
+// Lumber Pattern
+// --------------
+// The pattern is semi-intelligent - in that, if you go 
+// a direction that has wood, it will keep going that direction
+// then switch to other compass points when no wood is found.
+// This is what makes this a "better" lumberjack macro than
+// most I've found - it learns which directions are yielding wood.
+//
+// Marking Locations
+// -----------------
+// Choose _sparsely_ wooded areas without much aggro. For example,
+// outside Andaria. Examples of places NOT to do this : Nusero island.
+// Just mark right in the middle of the forest.
+//
+// Aggro Avoidance
+// ---------------
+// Macro will recall you out immediately if it detects any hostile nearby.
+// If you get aggro, and its going to happen, where the mob is blocking
+// your recall. Just run away from it to another part of the forest, and
+// let macro continue. No need to stop!
+//
+// Tracking Window
+// ---------------
+// After getting frustrated with PKs jumping me, despite tracking closest,
+// I decided to add active Tracking alongside passive hunting mode. You will
+// see the tracking window appear on your screen. What I found was - it actually
+// improves reliability of passive hunting! No explanation why - maybe
+// passive hunting processes the results from the active track? 
+// No PKs have ever gotten even close to me after I added this /thumbsup.
+//
+// IMPORTANT : Mix and match your rune locations. Do not put 2 of same
+//             location next to each other. You don't want to detect PK
+//             and recall back 20 spaces away.
+//
+// Known Issues
+// ------------
+//
+// You might see this macro walk you into a house or some other strange place.
+// Dont worry it will turn you around or, upon exhausting directions, go to
+// next rune spot.
+//
+// Sounds
+// ------------
+// 1. You can get the buzzer.wav file at :
+//    https://github.com/gmccord333/UOOutlands/tree/master/Sounds
+// 2. Create a \Sounds directory in UOSteam directory
+// 3. Put file in there
+//
+// Versions
+// -----------
+// 1.0 First release! yay!
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+THIS IS NOT THE SCRIPT. YOU MUST PURCHASE THE REAL SCRIPT FROM ME FOR 5 PREV COINS.
+
+SEE DETAILS ROOT OF GITHUB REPOSITORY.
