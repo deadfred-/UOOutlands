@@ -29,4 +29,6 @@ By purchasing a script from me, you get:
 Why sell them? 
 * They took an immense amount time to create and test. Time I could have spent in game in farming. If I give them away, then its a double whammie - not only have I missed farming, but I've given you scripts to compete with my ability to sell ingots/lumber. See? Asking for a few donation coins offsets this risk and lost time/revenue.
 
+My expectation is, you are going to get use out of them. If, for some reason, like some crazy game rule change - the scripts no longer can work - you will instantly get back your coins. Or, you decide to leave server, and want to get back coins to give to a friend, no problem! If you don't get the value you want, I want to refund you!!!
+
 :skull_and_crossbones: Don't forget to visit my web site www.outlandstreasure.com.
