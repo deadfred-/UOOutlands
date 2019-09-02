@@ -4,7 +4,10 @@
 // by Jewele
 //
 // Recall lumberjack which recalls you to each location in a runebook,
-// and gathers resources in a semi-random pattern around you.
+// and gathers resources in a semi-random pattern around you. Due to 
+// it 'exploring' the forest around you, it will not bring in wood
+// near as fast as a player directed character. However, its return
+// actually is pretty good! I was surprised when I tested it.
 //
 // What does this do for you:
 // --------------------------
