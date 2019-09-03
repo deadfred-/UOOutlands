@@ -1,0 +1,266 @@
+/////////////////////////////////////////////
+// UO Steam Vendor Macro
+// for Outlands
+//
+// This is a new script I came up with to help you find
+// items you want to buy at vendor malls. It does require
+// some customization from you before you run it - because
+// it has no idea what you want to buy! However, you can 
+// modify the code below to include words in the item(s).
+//
+// Do you want to search 30+ vendors for a certain item?
+// If yes, this script is for you!
+//
+// This is only for rare drops - not weapons or armor. If you
+// dont see a rare item type, message me to add it, or you
+// can just add it yourself.
+//
+// It will search every container type I could find and open it
+// looking for the items you want to purchase. Your screen will
+// fill up very quickly. Don't worry just move to close it.
+//
+// The pause for each container is intentional. You want the 
+// last container you are buying from to be on top, so 
+// you can double check it.
+//
+// This also only searches main vendor pack + 1 level of container.
+// What you want is going to be in main vendor or at most, one level
+// deep. No reason to go further than that.
+//
+// This is not a "drive by" instant searcher - it has to open
+// bags click items all over the place - give it a few minutes to run
+// especially at crowded vendor malls.
+//
+// FEEL FREE TO CUSTOMIZE for your own needs. Maybe you want ingots...
+// or wood, or arrows. Just add those types below and let it run! I can't
+// possibly add all the types you are looking for - but if you feel I 
+// missed something - send to me.
+//
+// How to use?
+// ===========
+// 1. Modify code section below for the 'words'
+//    which match your item. No need to be exact.
+// 2. Modify the code section for the graphic ID
+//    of the item you want to buy. 
+// 3. Go to a vendor mall
+// 4. Run it
+// 5. You will see a purchase screen for every item
+//    which matches your item.
+// 6. If you want the sounds, put a 'cymbals.wav' in your
+//    UOSteam sounds directory. All sounds are in this
+//    repository in the \sounds github directory.
+//
+// EXAMPLES:
+// =========
+//
+// Water Core:
+// -----------
+// @pushlist! 'rares' 0xF91
+// @pushlist 'words' 'water'
+//
+// Poison Extract:
+// ---------------
+// @pushlist! 'rares' 0xEFC
+// @pushlist 'words' 'poison'
+//
+// Poison Extract + Tinkering Skill scroll:
+// ========================================
+// @pushlist! 'rares' 0xEFC
+// @pushlist! 'rares' 0x227A 
+// @pushlist 'words' 'poison'
+// @pushlist 'words' 'tinker'
+//
+// FAQ
+// ====
+// Q: Can I search for price ranges on certain items?
+// A: No
+//
+// Q: Why does skill scroll not tell me what type it is?
+// A: I feel its a bug - I filed it. For now, just look
+//    at your journal. I recommend you look at the open pack
+//    and find the scroll you want, then buy that.
+//
+// Q: Where do I get the sounds?
+// A: https://github.com/gmccord333/UOOutlands/tree/master/Sounds
+//
+// Q: Can I search for a certain color cloth?
+// A: Yes, enable cloth ID, and enter cloth keywords in 'words'
+//
+// Versions
+// ========
+// 1.0 - First cut
+//
+/////////////////////////////////////////////
+@clearignorelist
+ignoreobject 'Self'
+
+@removelist 'levels'
+@createlist 'levels'
+@createlist 'rares'
+@clearlist 'rares'
+@createlist 'words'
+@clearlist 'words'
+
+//
+// !!! MODIFY THIS PART !!!
+// 
+// Enter the words matching 
+// the item you want. Your journal
+// is searched for these words.
+//
+@pushlist 'words' 'trap'
+@pushlist 'words' 'lockpick'
+@pushlist 'words' 'cartography'
+
+// 
+// Comment or uncomment the item types
+// you are looking for. This speeds it up
+// quite a bit, not trying to click things
+// you know you don't want.
+//
+@pushlist! 'rares' 0x227A // ss
+// @pushlist! 'rares' 0x240  // phyl
+// @pushlist! 'rares' 0x5740 // ball
+// @pushlist! 'rares' 0x7161 // dye
+// @pushlist! 'rares' 0xEFC  // extract
+// @pushlist! 'rares' oxEFE  // dye
+// @pushlist! 'rares' 0xF02  // headwear dye
+// @pushlist! 'rares' 0xF03  // shield/hair dye
+// @pushlist! 'rares' 0x7161 // furniture dye
+// @pushlist! 'rares' 0xF91  // core
+// @pushlist! 'rares' 0x42BF  // MCD
+// @pushlist! 'rares' 0xa8c6  // Link
+// @pushlist! 'rares' 0x72a4  // research
+// @pushlist! 'rares' 0x14ef  // deed
+// @pushlist! 'rares' 0x175d  // cloth
+// @pushlist! 'rares' 0x4516  // distill
+
+//
+// !!! END MODIFY !!!
+//
+
+//
+// Vendor types (male or female) 
+// 
+@clearlist 'VendorTypes'
+@createlist 'VendorTypes'
+pushlist 'VendorTypes' 0x190
+pushlist 'VendorTypes' 0x191
+
+//
+// Merchant container types
+//
+@clearlist 'ContainerTypes'
+@createlist 'ContainerTypes'
+@pushlist! 'ContainerTypes' 0xe75 // Backpack
+@pushlist! 'ContainerTypes' 0xe76 // Bag
+@pushlist! 'ContainerTypes' 0xe80 // Lesser Paragon Chest
+@pushlist! 'ContainerTypes' 0xe79 // Pouch
+@pushlist! 'ContainerTypes' 0x9aa // Wooden Box
+@pushlist! 'ContainerTypes' 0xe42 // Wooden Chest
+@pushlist! 'ContainerTypes' 0xe40 // container
+@pushlist! 'ContainerTypes' 0xE3C // other types ...
+@pushlist! 'ContainerTypes' 0xE3D
+@pushlist! 'ContainerTypes' 0xE3E
+@pushlist! 'ContainerTypes' 0xE3F
+@pushlist! 'ContainerTypes' 0xE40
+@pushlist! 'ContainerTypes' 0xE41
+@pushlist! 'ContainerTypes' 0xE42
+@pushlist! 'ContainerTypes' 0xE43
+@pushlist! 'ContainerTypes' 0xE7C
+@pushlist! 'ContainerTypes' 0xE7D
+@pushlist! 'ContainerTypes' 0xE7E
+@pushlist! 'ContainerTypes' 0xE7F
+@pushlist! 'ContainerTypes' 0x09AA
+@pushlist! 'ContainerTypes' 0x09AB
+@pushlist! 'ContainerTypes' 0x09A9
+
+//
+// Hide if you can
+//
+if not hidden
+    useskill 'hiding'
+endif
+
+//
+// Push all vendors into containers
+//
+@clearlist 'containers'
+@createlist 'containers'
+for 0 to 'VendorTypes'
+    while @findtype VendorTypes[]
+        sysmsg "Adding vendor" 55
+        @pushlist! 'containers' 'found'
+        @ignoreobject 'found'
+    endwhile
+endfor
+
+//
+// While we have containers to search
+//
+while list 'containers' > 0
+    //
+    // Open it
+    //
+    sysmsg "Opening container..." 79
+    useobject 'containers[0]'
+    pause 1000
+    //
+    // Initialize buy list
+    //
+    @clearlist 'buy'
+    @createlist 'buy'
+    //
+    // Check for rares
+    //
+    for 0 to 'rares'
+        while @findtype 'rares[]' 'Any' 'containers[0]'
+            @clearjournal
+            clickobject 'found'
+            pause 500
+            sysmsg "Found item type" 77
+            for 0 to 'words'
+                sysmsg 'words[]'
+                if @injournal 'words[]' 'system'
+                    @pushlist! 'buy' 'found'
+                endif
+            endfor
+            @ignoreobject 'found'
+        endwhile
+    endfor
+    //
+    // Check for containers
+    //
+    if list 'levels' < 2
+        for 0 to 'ContainerTypes'
+            while @findtype 'ContainerTypes[]' 'Any' 'containers[0]'
+                pushlist! 'containers' 'found' 'back'
+                @ignoreobject 'found'
+            endwhile
+        endfor
+        pushlist 'levels' '1'
+    endif
+    //
+    // Click and (and buy)
+    //
+    for 0 to 'buy'
+        waitforcontext 'buy[]' 0 2000
+        waitforgump 0xfece3c0f 2000
+        if @gumpexists 0xfece3c0f
+            playsound 'cymbals.wav'
+            sysmsg "buy item, or dismiss to continue" 55
+            // Wait for player to buy or dismiss
+            while @gumpexists 0xfece3c0f
+                pause 1000
+            endwhile
+            sysmsg "Continuing..." 55
+        endif
+    endfor
+    //
+    // Done with this container
+    //
+    poplist 'containers' 'front'
+endwhile
+
+headmsg "DONE!" 22
+playsound 'cymbals.wav'
