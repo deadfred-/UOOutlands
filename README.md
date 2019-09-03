@@ -10,6 +10,14 @@ Script contributions can be sent to my discord account **Jewele**
 
 Im here to help and I will as time permits (I like to play too). But I've been writing UO Steam scripts for years - and I'd love to help you with a problem you are having! Just hit me up - no charge, really!
 
+## Whats New?
+
+Latest scripts I've published you might like:
+
+| Script | Purpose|
+| ------------- | ------------- |
+| :mag:  | Vendor mall searcher! Yah! This is a fun one I just wrote. Saves time looking for those special items at big vendor malls. Enjoy and I do appreciate constructive feedback. [here](Utility/VendorMall.txt)
+
 ## Secret Scripts
 
 I have several personal scripts available, you can now purchase from me, for 5 Prevalia donation coins (each). The charged cost represents the amount of time I have spent writing, testing, and perfecting them. The cost also covers helping you - these are much more complicated scripts (500+ lines) and *everyone* has questions about getting them going or customizing them to their needs.
