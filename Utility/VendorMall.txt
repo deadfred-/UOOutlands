@@ -89,8 +89,13 @@
 // Versions
 // ========
 // 1.0 - First cut
+// 1.1 - Fixed empty loop check, for 0 to loop with no items runs once? sigh.
 //
 /////////////////////////////////////////////
+
+sysmsg "Vendor Mall Script" 88
+sysmsg "Version 1.1" 88
+
 @clearignorelist
 ignoreobject 'Self'
 
@@ -208,8 +213,8 @@ while list 'containers' > 0
     //
     // Initialize buy list
     //
-    @clearlist 'buy'
     @createlist 'buy'
+    @clearlist 'buy'
     //
     // Check for rares
     //
@@ -243,19 +248,22 @@ while list 'containers' > 0
     //
     // Click and (and buy)
     //
-    for 0 to 'buy'
-        waitforcontext 'buy[]' 0 2000
-        waitforgump 0xfece3c0f 2000
-        if @gumpexists 0xfece3c0f
-            playsound 'cymbals.wav'
-            sysmsg "buy item, or dismiss to continue" 55
-            // Wait for player to buy or dismiss
-            while @gumpexists 0xfece3c0f
-                pause 1000
-            endwhile
-            sysmsg "Continuing..." 55
-        endif
-    endfor
+    if list 'buy' > 0
+        for 0 to 'buy'
+            sysmsg "buy" 88
+            waitforcontext 'buy[]' 0 2000
+            waitforgump 0xfece3c0f 2000
+            if @gumpexists 0xfece3c0f
+                playsound 'cymbals.wav'
+                sysmsg "buy item, or dismiss to continue" 55
+                // Wait for player to buy or dismiss
+                while @gumpexists 0xfece3c0f
+                    pause 1000
+                endwhile
+                sysmsg "Continuing..." 55
+            endif
+        endfor
+    endif
     //
     // Done with this container
     //
