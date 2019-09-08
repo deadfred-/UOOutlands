@@ -1,4 +1,9 @@
 // Credit : Craigs here
+//
+// IMPORTANT!!! 
+// AS OF 9.8.2019 THE LOCATION OF KEYRINGS
+// SHIFTED +1. MAKE SURE YOU GET THIS NEW
+// VERSION!!!
 ///////
 if not @findobject 'tinkermats'
   headmsg 'Target Materials Container' 57
@@ -59,7 +64,7 @@ if @findtype 0x1bf2 '0' 'backpack' and amount 'found' >= 20
     waitforgump 0x38920abd 15000
     replygump 0x38920abd 109
     waitforgump 0x38920abd 15000
-    replygump 0x38920abd 207
+    replygump 0x38920abd 208
     waitforgump 0x38920abd 15000
     waitforgump 0x38920abd 15000
   elseif skill 'Tinkering' < 120
