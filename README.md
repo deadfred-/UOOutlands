@@ -17,8 +17,7 @@ Latest scripts I've published you might like:
 | Script | Purpose|
 | ------------- | ------------- |
 | :mag:  | Vendor mall searcher! Yah! This is a fun one I just wrote. Saves time looking for those special items at big vendor malls. Enjoy and I do appreciate constructive feedback. [here](Utility/VendorMall.txt)
-| :snake:  | Just finished a poison training macro that uses Storage Shelves. [here](Skills/Poisoning_Shelf (55-120).txt)
-
+| :snake:  | Just finished a poison training macro that uses Storage Shelves ~ at Skills/Poisoning_Shelf (55-120).txt
 
 ## Secret Scripts
 
