@@ -68,6 +68,7 @@ endwhile
 if @findobject 'enemy'
 
     attack! 'enemy'
+    setalias 'last' 'enemy'
 
     // 
     // drop queued spell if enemy in range

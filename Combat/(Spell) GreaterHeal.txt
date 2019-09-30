@@ -17,6 +17,11 @@
 // * If you are poisoned, and you do not have a cure pot, cures
 //   you instead with a spell before attempting to heal
 //
+// TIP! Opening your backpack is required, especially if you zone.
+//      The game forgets you have potions when you zone and attempts
+//      to use them wont work. By opening your pack it forces
+//      client to re-inventory your potions so you can use them.
+//
 // How to use?
 // -----------
 // 1) Run script when you want to cast 'GHeal'
@@ -30,6 +35,12 @@
 /////////////////////////////////////////////
 @cleartargetqueue
 @canceltarget
+
+//
+// Open backpack
+//
+useobject! 'backpack'
+
 pause 100
 // Cures
 if poisoned 'self'
@@ -56,6 +67,12 @@ if diffhits > 20
   autotargetself
   pause 2000
 else
+  //
+  // for someone else
+  //
+  if war
+    warmode 'off'
+  endif
   cast 'Greater Heal'
   waitfortarget 5000
 endif

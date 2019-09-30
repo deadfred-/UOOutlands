@@ -55,7 +55,7 @@ while not dead
   //
   while paralyzed and counttype 0xe79 38 'backpack' > 0
     msg "[pouch"
-    pause 500
+    pause 250
   endwhile
 
   //
@@ -64,7 +64,7 @@ while not dead
   while poisoned and counttype 0xf07 'any' 'backpack' > 0
     headmsg "[Cure] Potion" 194
     usetype 0xf07
-    pause 5000
+    pause 250
   endwhile
 
   //
@@ -74,21 +74,19 @@ while not dead
     if @findtype 0xf0c 0 'backpack'
         headmsg "[Heal] Potion" 53
         useobject! 'found'
-        pause 1000
+        pause 750
     endif
   endif
 
   //
-  // Refresh
+  // Refresh (modify for your dex)
   //
-  if stam < maxstam
+  if stam < maxstam and stam < 100
     if @findtype 0xf0b 0 'backpack'
       headmsg '[Refresh] Potion' 93
       @usetype 0xf0b
       pause 750
     endif
   endif
-
-  pause 500
 
 endwhile

@@ -8,7 +8,7 @@
 // 1) Start at bank
 // 2) Modify script for potion you want to use
 // 3) Have 1 kryss in your pack
-// 4) Have 1 bag in back with your poison kegs.
+// 4) Have 1 bag in bank with your poison kegs.
 //    Use kegs appropriate to your skill!
 // 5) Have 1 Greater Cure keg in bank
 // 5) Have some bottles in your pack (5+)
@@ -21,6 +21,14 @@
 // Version 2.0
 // -----------
 // Added health checks and heals
+//
+// Wiki Info:
+// ----------
+// Lesser Poison: 0-40 Poisoning
+// Regular Poison: 35-60 Poisoning
+// Greater Poison: 55-80 Poisoning
+// Deadly Poison: 75-100 Poisoning
+// Lethal Poison: 95-120 Poisoning
 //
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
@@ -142,7 +150,6 @@ while not dead
             break
         endif
     endwhile
-
     //
     // Heal
     //
@@ -157,7 +164,6 @@ while not dead
         endif
         pause 5000
     endwhile
-
     //
     // Skill cooldown
     //

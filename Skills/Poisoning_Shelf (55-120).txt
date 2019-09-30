@@ -1,0 +1,271 @@
+/////////////////////////////////////////////
+// UO Steam Poisoning Trainer 55-120 (from Shelf)
+// for Outlands
+// by Jewele
+//
+// I didn't like some of the other shelf poisoning macros I saw
+// so I rewrote them into this one - its much simpler and just
+// as effective.
+//
+// Make SURE you have 100 str. Server forces a pause after poisoning
+// which causes a delay before you can cure anything. You need to be 
+// able to take a *tic* of poison before cures will kick in!
+//
+// How to use?
+// -----------
+// 1) Start at home next to shelf
+// 2) Put a _poisoned_ kryss in your pack
+// 3) If you have healing, stock bandages
+//    If you have magery, stock gheal regs
+// 4) Have 1 kryss in your pack
+// 5) Run script
+//
+// Version 1.0
+// -----------
+// First release! yay!
+//
+// Wiki Info:
+// ----------
+// Lesser Poison: 0-40 Poisoning
+// Regular Poison: 35-60 Poisoning
+// Greater Poison: 55-80 Poisoning
+// Deadly Poison: 75-100 Poisoning
+// Lethal Poison: 95-120 Poisoning
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+sysmsg "Poisoning Shelf Script" 88
+sysmsg "Version 1.0" 88
+@clearjournal
+
+//
+// Open backpack
+//
+@useobject 'backpack'
+pause 1000
+
+//
+// Set shelf alias'
+//
+if not findalias 'shelf'
+    sysmsg "Select your shelf"
+    promptalias 'shelf'
+endif
+
+//
+// Skill check
+// 
+if skill 'poisoning' < 55
+    headmsg 'Train With Poison Potions til 55' 21
+    stop
+endif
+
+//
+// Actions list
+//
+@removelist 'actions'
+@createlist 'actions'
+pushlist 'actions' 'restock'
+while not dead
+
+  @canceltarget
+
+  //
+  // 120
+  //
+  if skill 'poisoning' == 120
+      headmsg 'Done!' 67
+      stop
+  endif
+
+  //
+  // Server save
+  //
+  if @injournal 'will save' 'system'
+    sysmsg "Server save..." 67
+    pause 30000
+    @clearjournal
+  endif
+
+  //
+  // Check : Health
+  //
+  if diffhits > 10
+    // 
+    //  Poison check
+    //
+    if poisoned 
+      autotargetself
+      cast 'Cure'
+      pause 1500
+      continue
+    endif
+    //
+    // Magery heal
+    //
+    if skill magery >= 50 and mana > 15
+      autotargetself
+      cast 'Greater Heal'
+      pause 3500
+      continue
+    endif
+    //
+    // Bandage heal
+    //
+    if counttype '0xe21' 'any' 'backpack' > 1
+      bandageself!
+      pause 10000
+    endif
+    pause 5000
+    continue
+  endif
+
+  //
+  // Check : Restock
+  //
+  if not @inlist! 'actions' 'restock'
+    //
+    // cures
+    //
+    if @counttype 0xf07 'any' 'backpack' < 5
+      pushlist! 'actions' 'restock'
+      continue
+    endif
+    //
+    // heals
+    //
+    if @counttype 0xf0c 'any' 'backpack' < 5
+      pushlist! 'actions' 'restock'
+      continue
+    endif    
+    //
+    // poison
+    //
+    if @counttype 0xf0a 'any' 'backpack' < 1
+      pushlist! 'actions' 'restock'
+      continue
+    endif
+  endif
+
+  //
+  // Restock
+  //
+  if @inlist! 'actions' 'restock'
+    @clearlist 'actions'
+    sysmsg "restocking" 67
+    // restock
+    waitforcontext 'shelf' 0 5000
+    waitfortarget 5000
+    target! 'self'
+    pause 1000
+    useobject 'shelf'
+    waitforgump 0xc0b1026d 5000
+    // clear
+    replygump 0xc0b1026d 16
+    waitforgump 0xc0b1026d 5000
+    // edit loadout
+    replygump 0xc0b1026d 3
+    waitforgump 0xc0b1026d 5000
+    // cures (10)
+    replygump 0xc0b1026d 201
+    waitforgump 0xc0b1026d 5000
+    replygump 0xc0b1026d 216
+    waitforgump 0xc0b1026d 5000
+    // heals (10)
+    replygump 0xc0b1026d 200
+    waitforgump 0xc0b1026d 15000
+    replygump 0xc0b1026d 215
+    waitforgump 0xc0b1026d 15000
+    // gheal regs
+    replygump 0xc0b1026d 106
+    waitforgump 0xc0b1026d 15000
+    replygump 0xc0b1026d 104
+    waitforgump 0xc0b1026d 15000
+    replygump 0xc0b1026d 103
+    waitforgump 0xc0b1026d 15000
+    replygump 0xc0b1026d 102
+    waitforgump 0xc0b1026d 15000
+    // bandages
+    replygump 0xc0b1026d 304
+    waitforgump 0xc0b1026d 15000
+    // 78 poison
+    if skill 'Poisoning' <= 78
+      // select greater
+      replygump 0xc0b1026d 207
+      waitforgump 0xc0b1026d 5000
+      // load 10
+      for 10
+        replygump 0xc0b1026d 222
+        waitforgump 0xc0b1026d 5000
+      endfor
+    endif
+    // 100 poison
+    if skill 'Poisoning' <= 98 and skill 'Poisoning' > 78
+      // select greater
+      replygump 0xc0b1026d 208
+      waitforgump 0xc0b1026d 5000
+      // load 10
+      for 10
+        replygump 0xc0b1026d 223
+        waitforgump 0xc0b1026d 5000
+      endfor
+    endif
+    // 120 poison
+    if skill 'Poisoning' <= 120 and skill 'Poisoning' > 98
+      // select lethal
+      replygump 0xc0b1026d 209
+      waitforgump 0xc0b1026d 5000
+      // load 10
+      for 10
+        replygump 0xc0b1026d 224
+        waitforgump 0xc0b1026d 5000
+      endfor
+    endif
+    // resupply
+    replygump 0xc0b1026d 7
+    waitforgump 0xc0b1026d 5000
+    pause 1000
+    replygump 0xc0b1026d 0
+  endif
+
+  sysmsg "Applying poison..." 67
+  //
+  // Poison
+  //
+  @findtype 0xf0a 'any' 'backpack'
+  sysmsg "skill"
+  useskill 'Poisoning'
+  waitfortarget 5000
+  target! 'found'
+  //
+  // kryss
+  //
+  @findtype 0x1401 'any' 'backpack'
+  waitfortarget 5000
+  target! 'found'
+  
+  //
+  // SERVER PAUSE
+  //
+  // THERE IS A SERVER ENFORCED PAUSE AFTER APPLYING POISON.
+  // Probably to counter combat poison scripts people were using.
+  //
+  // Nothing I can do, server is causing this.
+  //
+
+  //
+  // Poisoned?
+  //
+  while poisoned
+      headmsg 'Darnit!' 55
+      usetype 0xf07 'any' 'backpack'
+      pause 500
+      if not findtype 0xf07 'any' 'backpack'
+          break
+      endif
+  endwhile
+
+  sysmsg "endwhile"
+
+endwhile

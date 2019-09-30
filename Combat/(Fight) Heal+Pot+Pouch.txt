@@ -35,7 +35,7 @@
 // 
 // Versions
 // --------
-// 1.0 - Inital version
+// 1.0 - Initial version
 // 1.1 - Suppressed healing timer check with ampersand
 // 1.3 - Removed out of cures/heals warnings, created too much spam
 // 1.4 - Removed dress call - it was interrupting immediate recasts

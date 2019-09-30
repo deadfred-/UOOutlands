@@ -2,6 +2,16 @@
 // UO Steam Taming Macro
 // for Outlands
 //
+// Just a simple taming script where you can stand
+// at a spawn point and tame the same type of creature
+// over and over. Assumes its hostile to you.
+//
+// Tames it, kills it, waits for respawn.
+//
+/// v1.0
+// ----
+// * Initial version calibrated for 25 dex
+//
 /////////////////////////////////////////////
 
 sysmsg "AFK Taming Macro - Version 1.0" 44

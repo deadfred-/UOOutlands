@@ -113,9 +113,7 @@ ignoreobject 'Self'
 // the item you want. Your journal
 // is searched for these words.
 //
-@pushlist 'words' 'trap'
-@pushlist 'words' 'lockpick'
-@pushlist 'words' 'cartography'
+@pushlist 'words' 'Shadow'
 
 // 
 // Comment or uncomment the item types
@@ -123,7 +121,7 @@ ignoreobject 'Self'
 // quite a bit, not trying to click things
 // you know you don't want.
 //
-@pushlist! 'rares' 0x227A // ss
+//@pushlist! 'rares' 0x227A // ss
 // @pushlist! 'rares' 0x240  // phyl
 // @pushlist! 'rares' 0x5740 // ball
 // @pushlist! 'rares' 0x7161 // dye
@@ -132,7 +130,7 @@ ignoreobject 'Self'
 // @pushlist! 'rares' 0xF02  // headwear dye
 // @pushlist! 'rares' 0xF03  // shield/hair dye
 // @pushlist! 'rares' 0x7161 // furniture dye
-// @pushlist! 'rares' 0xF91  // core
+@pushlist! 'rares' 0xF91  // core
 // @pushlist! 'rares' 0x42BF  // MCD
 // @pushlist! 'rares' 0xa8c6  // Link
 // @pushlist! 'rares' 0x72a4  // research
