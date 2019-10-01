@@ -1,0 +1,91 @@
+/////////////////////////////////////////////
+// UO Steam Paragon Hunter
+// for Outlands
+// by Jewele
+//
+// Recalls you around to different spots looking for paragons.
+// Note ~ this requires you monitor your tracking results screen
+// for the purple paragon mobs - it will not auto detect purple
+// on your screen.
+//
+//
+// What does this do for you:
+// --------------------------
+// * Recalls to 15 spots in each runebook you add
+// * At each location runs tracking
+// * Scrolls through tracking results
+// 
+// Character Build:
+// ----------------
+// 50+ Mining
+// 50+ Camping
+// 60 Magery
+// 100 Tracking
+//
+@removelist 'Runes'
+createlist 'Runes'
+@pushlist 'Runes' 5
+@pushlist 'Runes' 11
+@pushlist 'Runes' 17
+@pushlist 'Runes' 23
+@pushlist 'Runes' 29
+@pushlist 'Runes' 35
+@pushlist 'Runes' 41
+@pushlist 'Runes' 47
+@pushlist 'Runes' 53
+@pushlist 'Runes' 59
+@pushlist 'Runes' 65
+@pushlist 'Runes' 71
+@pushlist 'Runes' 77
+@pushlist 'Runes' 83
+@pushlist 'Runes' 89
+@pushlist 'Runes' 95
+
+@removelist 'Runebooks'
+@createlist 'Runebooks'
+
+pushlist! 'Runebooks' 0x411d70ff
+pushlist! 'Runebooks' 0x41301306
+pushlist! 'Runebooks' 0x41301407
+pushlist! 'Runebooks' 0x411d6ae4
+pushlist! 'Runebooks' 0x41300f9b
+pushlist! 'Runebooks' 0x411d6e27
+pushlist! 'Runebooks' 0x413011b9
+
+while not dead
+  for 0 to 'Runebooks'
+    for 0 to 'Runes'
+      while mana < 50
+        pause 1000
+      endwhile
+      useobject 'Runebooks[]'
+      waitforgump 0x5c7db029 15000
+      replygump 0x5c7db029 Runes[]
+      pause 2500
+      useskill 'hiding'
+      pause 11500
+      useskill 'Tracking'
+      waitforgump 0xfe5c638b 5000
+      replygump 0xfe5c638b 2
+      pause 1000
+      for 10
+        replygump 0xfe5c638b 3
+        pause 1000
+      endfor
+      while mana < 50
+        pause 1000
+      endwhile
+      cast 'recall'
+      waitfortarget 5000
+      target! 0x478ac73d
+      pause 2500
+      useskill 'hiding'
+      pause 11500
+      if @injournal 'world will save' 'system'
+         headmsg "world save"
+         pause 30000
+         @clearjournal
+      endif
+    endfor
+  endfor
+endwhile
