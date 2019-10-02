@@ -1,0 +1,145 @@
+/////////////////////////////////////////////
+// UO Steam Recall Vendor Buy
+// for Outlands
+// by Jewele
+//
+// Recalls you to various shops to buy what you need
+// using a vendor buy agent and a marked runebook.
+//
+// This uses an in game mechanic to move items that 
+// will make you -overweight- into your bank. We are 
+// going to use this to move your purchases into your
+// bank automatically.
+//
+// The macro is going to intentionally put you overweight
+// with purchases, this is expected and also reason you
+// cast 'Strength' on yourself for every run. It works this
+// way:
+//
+// 1. I have STR 390
+// 2. The vendor buy agent will overweight me to 413 before
+//    it dumps items to bank. I now cannot recall.
+// 3. Cast Strength on myself. I have have STR 428
+// 4. The vendor buy agent will not exceed 413 even though 
+//    my strength is 428. I can now move freely between shops
+//    and dump everything to bank.
+//
+// Character Build:
+// ----------------
+// 60 Magery
+//
+// Requirements:
+// -------------
+// Runebook
+//
+// Runebook Preparation:
+// ---------------------
+// You can really use whatever spots you want
+// in your runebook, you dont have to use a
+// dedicated one.
+//
+// How to use?
+// -----------
+// 1) Setup a UOSteam vendor buy macro to buy 99 of each
+//    resource you want
+// 2) Buy a lot of regs (pearl, root, moss, nightshade)
+// 3) Fill pack to full + 1 stone.
+// 4) Mark shops where you want to buy
+// 5) Modify rune list (below) to match shop locations
+// 6) Run script
+//
+// MONEY
+// =====
+// Make sure you have coins in your bank, not checks.
+// Just do 'check 100000', then cash it. There, ready.
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+sysmsg "UO Outlands Recall Vendor Buy" 88
+
+//
+// CONFIGURE RUNES LIST
+//
+// Add a '//' comment marker before runes
+// which do not apply for this macro.
+// 16 rune spots, 16 positions.
+//
+@createlist 'runes'
+@clearlist 'runes'
+//@pushlist 'runes' 5    // 1
+//@pushlist 'runes' 11   // 2
+//@pushlist 'runes' 17   // 3
+//@pushlist 'runes' 23   // 4
+//@pushlist 'runes' 29   // 5
+//@pushlist 'runes' 35   // 6
+//@pushlist 'runes' 41   // 7
+//@pushlist 'runes' 47   // 8
+@pushlist 'runes' 53   // 9
+@pushlist 'runes' 59   // 10
+@pushlist 'runes' 65   // 11
+@pushlist 'runes' 71   // 12
+@pushlist 'runes' 77   // 13
+//@pushlist 'runes' 83   // 14
+//@pushlist 'runes' 89   // 15
+//@pushlist 'runes' 95   // 16
+
+//
+// Set rune book
+//
+@useobject 'backpack'
+if not findalias 'runebook'
+  sysmsg "Select runebook with locations" 88
+  promptalias 'runebook'
+endif
+
+//
+// Loop until stopped
+//
+while not dead
+  // For each spot in runebook
+  for 0 to 'runes'
+    // Get mana
+    while mana < 25
+      sysmsg "Waiting for mana" 88
+      useskill 'Meditation'
+      pause 11000
+      continue
+    endwhile
+    if not buffexists "Strength"
+      cast 'Strength'
+      waitfortarget 5000
+      target! 'self'
+      pause 1000
+    endif
+    useobject 'runebook'
+    waitforgump 0x5c7db029 5000
+    replygump 0x5c7db029 runes[]
+    pause 3000
+    msg "vendor buy"
+    pause 1000
+    msg "vendor buy"
+    pause 1000
+    msg "vendor buy"
+    pause 1000
+    msg "vendor buy"
+    pause 1000
+    msg "vendor buy"
+    pause 1000
+    msg "vendor buy"
+    pause 1000
+    msg "vendor buy"
+    pause 1000
+    msg "vendor buy"
+    pause 1000
+    msg "vendor buy"
+    pause 1000
+    msg "vendor buy"
+    pause 1000
+  endfor
+
+  //
+  // Vendor spawn pause (30 mins)
+  //
+  pause 1800000
+
+endwhile
